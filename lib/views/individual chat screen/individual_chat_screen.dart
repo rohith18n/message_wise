@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:message_wise/Controllers/chat%20bloc/chat_bloc.dart';
+import 'package:message_wise/components/custom_circular_progress_indicator.dart';
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/individual%20chat%20screen/widgets/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -86,22 +87,14 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: backroundColor,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: AppBarForChat(bot: widget.person)),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        color: backroundColor,
         child: SizedBox(
           child: Stack(children: [
-            Image.asset(
-              "assets/images/doodle2.png",
-              width: double.infinity,
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.low,
-            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,8 +122,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                             itemCount: snapshot.data!.docs.length,
                           );
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return const CustomIndicator();
                         }
                       }),
                 ),

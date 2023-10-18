@@ -1,4 +1,5 @@
 import 'package:message_wise/Models/user_model.dart';
+import 'package:message_wise/constants.dart';
 import 'package:message_wise/util.dart';
 import 'package:flutter/material.dart';
 import '../common/widgets/custom_text.dart';
@@ -11,15 +12,12 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: backroundColor,
         leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(
               Icons.arrow_back,
-              color: colorWhite,
             )),
       ),
-      backgroundColor: backroundColor,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
@@ -36,7 +34,6 @@ class ProfileScreen extends StatelessWidget {
                 sizeHeight15,
                 CustomText(
                   content: user.username ?? "",
-                  colour: colorWhite,
                   size: 20,
                 ),
                 SizedBox(
@@ -75,12 +72,12 @@ class ProfileScreen extends StatelessWidget {
                     sizeWidth20,
                     const CustomText(
                       content: "info : ",
-                      colour: colorWhite,
+                      colour: kTextColor,
                       size: 15,
                     ),
                     CustomText(
                       content: user.email,
-                      colour: colorWhite,
+                      colour: kTextColor,
                       size: 15,
                     ),
                   ],
@@ -92,12 +89,12 @@ class ProfileScreen extends StatelessWidget {
                     sizeWidth20,
                     const CustomText(
                       content: "username : ",
-                      colour: colorWhite,
+                      colour: kTextColor,
                       size: 15,
                     ),
                     CustomText(
                       content: user.username ?? "",
-                      colour: colorWhite,
+                      colour: kTextColor,
                       size: 15,
                     ),
                   ],
@@ -129,7 +126,7 @@ class ProfileScreen extends StatelessWidget {
                     sizeWidth20,
                     const CustomText(
                       content: "group in common",
-                      colour: colorWhite,
+                      colour: kTextColor,
                       size: 15,
                     ),
                   ],

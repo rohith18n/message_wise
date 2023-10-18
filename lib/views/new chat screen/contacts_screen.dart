@@ -66,14 +66,10 @@ class ContactScreen extends StatelessWidget {
                   ),
                 ),
               ]),
-          backgroundColor: backroundColor,
-          centerTitle: true,
-          title: Image.asset("assets/images/logoText.png"),
         ),
-        body: Container(
+        body: SizedBox(
           width: double.infinity,
           height: double.infinity,
-          color: backroundColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             //stream builder

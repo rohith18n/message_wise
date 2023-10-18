@@ -4,6 +4,7 @@ import 'package:message_wise/Controllers/group%20functionality/group_functionali
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:message_wise/views/new%20chat%20screen/widgets/search_field.dart';
 
 import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
@@ -23,21 +24,26 @@ class GroupList extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(
-          width: 300,
-          height: 35,
-          child:
-//searchbar
-              TextField(
-            autofocus: false,
-            onTap: () {},
-            controller: _textEditingcontroller,
-            textAlign: TextAlign.start,
-            style: GoogleFonts.poppins(color: colorSearchBartext),
-            decoration: searchBarStyle(hint: "      search chat or username"),
-            onChanged: (value) async {},
-          ),
+        SearchField(
+          textEditingcontroller: _textEditingcontroller,
+          onChanged: (value) async {},
+          hintText: "    search username or message",
         ),
+//         SizedBox(
+//           width: 300,
+//           height: 35,
+//           child:
+// //searchbar
+//               TextField(
+//             autofocus: false,
+//             onTap: () {},
+//             controller: _textEditingcontroller,
+//             textAlign: TextAlign.start,
+//             style: GoogleFonts.poppins(color: colorSearchBartext),
+//             decoration: searchBarStyle(hint: "      search chat or username"),
+//             onChanged: (value) async {},
+//           ),
+//         ),
 //list view
         Expanded(
           child: BlocBuilder<GroupBloc, GroupState>(

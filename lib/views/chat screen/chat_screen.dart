@@ -34,16 +34,7 @@ class ChatScreen extends StatelessWidget {
         //     builder: (context, value, child) => value
         //         ? FloatingActionButton(
         //             backgroundColor: Colors.white,
-        //             onPressed: () {
-        //               Navigator.push(
-        //                   context,
-        //                   MaterialPageRoute(
-        //                     builder: (context) => NewGroupScreen(
-        //                       connections: connections,
-        //                       isAddMemberScreen: false,
-        //                     ),
-        //                   ));
-        //             },
+        //             onPressed: () {},
         //             child: const Icon(Icons.group_add),
         //           )
         //         : const SizedBox.shrink(),

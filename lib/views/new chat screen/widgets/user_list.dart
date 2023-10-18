@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/custom_list_view.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/custom_request_button.dart';
@@ -11,8 +10,7 @@ import '../../../Controllers/search bloc/search_bloc.dart';
 import '../../../Controllers/users bloc/users_bloc.dart';
 import '../../../Models/user_model.dart';
 import '../../../util.dart';
-import '../../common/widgets/custom_text.dart';
-import '../../common/widgets/textformcommon_style.dart';
+
 import '../../individual chat screen/individual_chat_screen.dart';
 
 class UsersListInContact extends StatefulWidget {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:message_wise/Controllers/group%20chat%20bloc/group_bloc.dart';
 import 'package:message_wise/Models/select_model.dart';
 import 'package:message_wise/Service/profile%20service/profile_service.dart';
+import 'package:message_wise/constants.dart';
 import 'package:message_wise/injectable.dart';
 import 'package:message_wise/views/home%20Screen/home_screen.dart';
 import 'package:message_wise/views/new%20group%20screen/widgets/group_member_icon.dart';
@@ -32,12 +33,10 @@ class NameScreen extends StatelessWidget {
             selectedBots: seletedBots,
             imagePath: imagePath.value),
       ),
-      backgroundColor: backroundColor,
       appBar: AppBar(
-        backgroundColor: backroundColor,
         title: const CustomText(
           content: "new group",
-          colour: colorWhite,
+          colour: kTextColor,
         ),
       ),
       body: Padding(

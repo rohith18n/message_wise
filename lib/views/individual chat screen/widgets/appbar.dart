@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:message_wise/constants.dart';
 
 import '../../../Controllers/chat bloc/chat_bloc.dart';
 import '../../../Models/user_model.dart';
@@ -25,7 +26,6 @@ class AppBarForChat extends StatelessWidget {
           },
           icon: const Icon(
             Icons.arrow_back,
-            color: colorWhite,
           )),
       title: InkWell(
         onTap: () {
@@ -40,7 +40,8 @@ class AppBarForChat extends StatelessWidget {
           children: [
             CustomText(
               content: bot.username ?? "",
-              colour: colorWhite,
+              colour: kTextColor,
+              size: 18,
             ),
             BlocBuilder<ChatBloc, ChatState>(
               builder: (context, state) {
@@ -53,7 +54,7 @@ class AppBarForChat extends StatelessWidget {
                 } else {
                   return const CustomText(
                     content: "offline",
-                    colour: colorWhite,
+                    colour: kTextColor,
                     size: 10,
                   );
                 }

@@ -1,15 +1,13 @@
 import 'dart:developer';
-
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
+import 'package:message_wise/views/new%20chat%20screen/widgets/search_field.dart';
 import 'package:message_wise/views/new%20group%20screen/widgets/group_member_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../Controllers/group functionality/group_functionality_bloc.dart';
 import '../../Models/select_model.dart';
 import '../../Models/user_model.dart';
-import '../common/widgets/textformcommon_style.dart';
 import '../new group name screen/name_screen.dart';
 
 ValueNotifier<List<SelectModel>> selectedBots = ValueNotifier([]);
@@ -82,15 +80,13 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
               groupId: widget.groupId),
         ),
       ),
-      backgroundColor: backroundColor,
       appBar: AppBar(
-        backgroundColor: backroundColor,
         title: BlocBuilder<GroupFunctionalityBloc, GroupFunctionalityState>(
           builder: (context, state) {
             if (!widget.isAddMemberScreen) {
               return const CustomText(
                 content: "new group",
-                colour: colorWhite,
+                colour: colorblack,
               );
             } else if (state is ProvideUserListState) {
               if (!state.isLoading) {
@@ -128,25 +124,17 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
       body: Column(
         children: [
           const SelectedTiles(),
-          SizedBox(
-            width: 300,
-            height: 30,
-            child: TextField(
-              autofocus: false,
-              onTap: () {},
-              controller: _textEditingController,
-              textAlign: TextAlign.start,
-              style: GoogleFonts.poppins(color: colorSearchBartext),
-              decoration: searchBarStyle(hint: "search friends"),
-              onChanged: (value) async {
-                setState(() {
-                  searchresult = bots.value
-                      .where((element) => element.bot.username!.contains(value))
-                      .toList();
-                  log("length   ${searchresult.length}");
-                });
-              },
-            ),
+          SearchField(
+            textEditingcontroller: _textEditingController,
+            onChanged: (value) async {
+              setState(() {
+                searchresult = bots.value
+                    .where((element) => element.bot.username!.contains(value))
+                    .toList();
+                log("length   ${searchresult.length}");
+              });
+            },
+            hintText: "          Search your friends",
           ),
           sizeHeight15,
           Expanded(
