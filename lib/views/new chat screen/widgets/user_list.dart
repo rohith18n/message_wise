@@ -2,6 +2,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:message_wise/size_config.dart';
+import 'package:message_wise/views/new%20chat%20screen/widgets/custom_list_view.dart';
+import 'package:message_wise/views/new%20chat%20screen/widgets/custom_request_button.dart';
+import 'package:message_wise/views/new%20chat%20screen/widgets/search_field.dart';
 import '../../../Controllers/chat bloc/chat_bloc.dart';
 import '../../../Controllers/search bloc/search_bloc.dart';
 import '../../../Controllers/users bloc/users_bloc.dart';
@@ -34,28 +38,18 @@ class _UsersListInContactState extends State<UsersListInContact> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: 300,
-          height: 35,
-          child:
-//searchbar
-              TextField(
-            autofocus: false,
-            onTap: () {},
-            controller: _textEditingcontroller,
-            textAlign: TextAlign.start,
-            style: GoogleFonts.poppins(color: colorSearchBartext),
-            decoration: searchBarStyle(hint: "      search chat or username"),
-            onChanged: (value) async {
-              setState(() {
-                result = widget.users
-                    .where((element) => element.username!.contains(value))
-                    .toList();
-              });
+        SearchField(
+          textEditingcontroller: _textEditingcontroller,
+          onChanged: (value) async {
+            setState(() {
+              result = widget.users
+                  .where((element) => element.username!.contains(value))
+                  .toList();
+            });
 
-              context.read<SearchBloc>().add(SearchingEvent(query: value));
-            },
-          ),
+            context.read<SearchBloc>().add(SearchingEvent(query: value));
+          },
+          hintText: "    search username or message",
         ),
 //list view
         Expanded(
@@ -88,40 +82,13 @@ class _UsersListInContactState extends State<UsersListInContact> {
                             .add(EnterToChatEvent(bot: result[index]));
                       }
                     },
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: colorWhite,
-                        radius: 20,
-                        backgroundImage: NetworkImage(result[index].photo ??
-                            "assets/images/nullPhoto.jpeg"),
-                      ),
-
-                      ///connection button
-                      trailing: widget.iscontactScreen
+                    child: CustomListTile(
+                      userName: result[index].username ?? "No Username",
+                      imageUrl:
+                          result[index].photo ?? "assets/images/nullPhoto.jpeg",
+                      trailingWidget: widget.iscontactScreen
                           ? requestButton(index)
-                          : const Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.green,
-                                  radius: 10,
-                                  child: Center(
-                                      child: CustomText(
-                                    content: "1",
-                                    colour: colorSearchBartext,
-                                    size: 10,
-                                  )),
-                                ),
-                                CustomText(
-                                  content: "5:11",
-                                  colour: colorWhite,
-                                )
-                              ],
-                            ),
-                      title: CustomText(
-                        content: result[index].username ?? "",
-                        colour: colorWhite,
-                      ),
+                          : const CustomTileTrailing(),
                     ),
                   ),
                 );
@@ -135,94 +102,58 @@ class _UsersListInContactState extends State<UsersListInContact> {
 
   Widget requestButton(int index) {
     if (result[index].state == UserConnections.request) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: 30,
-            child: IconButton(
-              icon: const Icon(
-                Icons.close,
-                color: errorColor,
-              ),
-              onPressed: () {
-                context
-                    .read<UsersBloc>()
-                    .add(DeclineRequestevent(botId: result[index].uid));
-                setState(() {
-                  result[index].state = UserConnections.connect;
-                });
-              },
-            ),
-          ),
-          SizedBox(
-            width: 30,
-            child: IconButton(
-              icon: const Icon(
-                Icons.check,
-                color: successColor,
-              ),
-              onPressed: () {
-                context
-                    .read<UsersBloc>()
-                    .add(AcceptRequestEvent(botId: result[index].uid));
-                setState(() {
-                  result[index].state = UserConnections.connected;
-                });
-              },
-            ),
-          ),
-        ],
+      return CustomRowButtons(
+        onPressedFirst: () {
+          context
+              .read<UsersBloc>()
+              .add(DeclineRequestevent(botId: result[index].uid));
+          setState(() {
+            result[index].state = UserConnections.connect;
+          });
+        },
+        onPressedSecond: () {
+          context
+              .read<UsersBloc>()
+              .add(AcceptRequestEvent(botId: result[index].uid));
+          setState(() {
+            result[index].state = UserConnections.connected;
+          });
+        },
       );
     } else if (result[index].state == UserConnections.connected) {
-      return SizedBox(
-        height: 25,
-        child: ElevatedButton(
-            style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(successColor)),
-            onPressed: () {},
-            child: const CustomText(
-              content: "connected",
-              colour: colorMessageClientTextWhite,
-              size: 10,
-            )),
+      return CustomRequestButton(
+        onPressed: () {},
+        textContent: "connected",
+        buttonStyle: const ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(successColor)),
+        height: getProportionateScreenHeight(25),
       );
     } else if (result[index].state == UserConnections.connect) {
-      return SizedBox(
-        height: 25,
-        child: ElevatedButton(
-            onPressed: () {
-              context
-                  .read<UsersBloc>()
-                  .add(SendRequestEvent(botId: result[index].uid));
-              setState(() {
-                result[index].state = UserConnections.pending;
-              });
-            },
-            child: const CustomText(
-              content: "request",
-              colour: colorlogo,
-              size: 10,
-            )),
+      return CustomRequestButton(
+        height: getProportionateScreenHeight(25),
+        onPressed: () {
+          context
+              .read<UsersBloc>()
+              .add(SendRequestEvent(botId: result[index].uid));
+          setState(() {
+            result[index].state = UserConnections.pending;
+          });
+        },
+        textContent: "request",
       );
     } else {
-      return SizedBox(
-        height: 25,
-        child: ElevatedButton(
-            onPressed: () {
-              if (result[index].state == UserConnections.pending) {
-                context
-                    .read<UsersBloc>()
-                    .add(RemoveRequestEvent(botId: result[index].uid));
-                setState(() {
-                  result[index].state = UserConnections.connect;
-                });
-              }
-            },
-            child: const CustomText(
-              content: "Pending",
-              size: 10,
-            )),
+      return CustomRequestButton(
+        onPressed: () {
+          if (result[index].state == UserConnections.pending) {
+            context
+                .read<UsersBloc>()
+                .add(RemoveRequestEvent(botId: result[index].uid));
+            setState(() {
+              result[index].state = UserConnections.connect;
+            });
+          }
+        },
+        textContent: "Pending",
       );
     }
   }

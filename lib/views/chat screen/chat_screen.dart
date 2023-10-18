@@ -1,5 +1,9 @@
 import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:message_wise/Models/user_model.dart';
+import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/size_config.dart';
+import 'package:message_wise/views/chat%20screen/widget/custom_tab_bar.dart';
 import 'package:message_wise/views/chat%20screen/widget/group_list.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/user_list.dart';
 import 'package:message_wise/views/new%20group%20screen/new_group_screen.dart';
@@ -7,7 +11,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../util.dart';
-import '../common/widgets/custom_text.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -22,69 +25,74 @@ class ChatScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: backroundColor,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(60.0),
-          //floationg action button
-          child: ValueListenableBuilder(
-            valueListenable: isVisible,
-            builder: (context, value, child) => value
-                ? FloatingActionButton(
-                    backgroundColor: Colors.white,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NewGroupScreen(
-                              connections: connections,
-                              isAddMemberScreen: false,
-                            ),
-                          ));
-                    },
-                    child: const Icon(Icons.group_add),
-                  )
-                : const SizedBox.shrink(),
-          ),
-        ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: Padding(
+        //   padding: const EdgeInsets.all(60.0),
+
+        //   child: ValueListenableBuilder(
+        //     valueListenable: isVisible,
+        //     builder: (context, value, child) => value
+        //         ? FloatingActionButton(
+        //             backgroundColor: Colors.white,
+        //             onPressed: () {
+        //               Navigator.push(
+        //                   context,
+        //                   MaterialPageRoute(
+        //                     builder: (context) => NewGroupScreen(
+        //                       connections: connections,
+        //                       isAddMemberScreen: false,
+        //                     ),
+        //                   ));
+        //             },
+        //             child: const Icon(Icons.group_add),
+        //           )
+        //         : const SizedBox.shrink(),
+        //   ),
+        // ),
         appBar: AppBar(
-          bottom: TabBar(
-              onTap: (value) {
-                if (value == 1) {
-                  isVisible.value = true;
-                } else {
-                  isVisible.value = false;
-                }
-              },
-              unselectedLabelColor: colorWhite.withOpacity(0.5),
-              isScrollable: true,
-              splashBorderRadius: BorderRadius.circular(30),
-              labelColor: colorWhite,
-              dividerColor: Colors.transparent,
-              indicatorColor: Colors.transparent,
-              tabs: [
-                const Tab(child: CustomText(content: "Friends")),
-                Tab(
-                  child: Container(
-                    constraints: const BoxConstraints(minWidth: 50),
-                    child: const Row(
-                      children: [
-                        CustomText(content: "Groups"),
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-          backgroundColor: backroundColor,
-          centerTitle: true,
-          title: Image.asset("assets/images/logoText.png"),
+          automaticallyImplyLeading: false,
+          actions: [
+            ValueListenableBuilder(
+              valueListenable: isVisible,
+              builder: (BuildContext context, value, Widget? child) => value
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                          right: getProportionateScreenWidth(20)),
+                      child: IconButton(
+                        icon: const Icon(CupertinoIcons.group),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewGroupScreen(
+                                  connections: connections,
+                                  isAddMemberScreen: false,
+                                ),
+                              ));
+                        },
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            )
+          ],
+          bottom: PreferredSize(
+              preferredSize: Size.fromHeight(getProportionateScreenHeight(40)),
+              child: CustomTabBar(
+                onTap: (value) {
+                  if (value == 1) {
+                    isVisible.value = true;
+                  } else {
+                    isVisible.value = false;
+                  }
+                },
+              )),
         ),
-        body: Container(
+        body: SizedBox(
           width: double.infinity,
           height: double.infinity,
-          color: backroundColor,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenWidth(10)),
             //stream builder
             //listen users collecion firestore
             child: StreamBuilder(
@@ -134,12 +142,11 @@ class ChatScreen extends StatelessWidget {
                             );
                           }
 
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return const CustomIndicator();
                         });
                   }
 
-                  return const CircularProgressIndicator();
+                  return const CustomIndicator();
                 }),
           ),
         ),

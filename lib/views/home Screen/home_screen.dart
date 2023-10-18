@@ -1,16 +1,16 @@
 import 'dart:developer';
-
-import 'package:message_wise/util.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/call%20screen/call_screen.dart';
 import 'package:message_wise/views/chat%20screen/chat_screen.dart';
 import 'package:message_wise/views/new%20chat%20screen/contacts_screen.dart';
 import 'package:message_wise/views/settings%20screen/settings_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:google_nav_bar/google_nav_bar.dart';
 import '../../Controllers/profile/profile_bloc_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -27,31 +27,38 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      body: ValueListenableBuilder(
-        valueListenable: _index,
-        builder: (context, index, child) => screens[index],
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-          index: 1,
-          animationCurve: Curves.easeInOut,
-          animationDuration: const Duration(milliseconds: 500),
-          onTap: (value) {
+        extendBody: true,
+        body: ValueListenableBuilder(
+          valueListenable: _index,
+          builder: (context, index, child) => screens[index],
+        ),
+        bottomNavigationBar: GNav(
+          selectedIndex: _index.value,
+          iconSize: getProportionateScreenHeight(27),
+          activeColor: kPrimaryColor,
+          color: kTextColor,
+          onTabChange: (value) {
             _index.value = value;
           },
-          buttonBackgroundColor: colorWhite,
-          height: 50,
-          color: const Color.fromARGB(232, 12, 121, 99),
-          backgroundColor: Colors.transparent,
-          items: const [
-            Icon(
-              Icons.call,
+          tabs: const [
+            GButton(
+              icon: CupertinoIcons.phone,
+              text: 'Calls',
             ),
-            ChatIcon(),
-            Icon(Icons.people_alt_sharp),
-            Icon(Icons.settings)
-          ]),
-    );
+            GButton(
+              icon: CupertinoIcons.chat_bubble_2,
+              text: 'Chats',
+            ),
+            GButton(
+              icon: CupertinoIcons.person_2,
+              text: 'Contacts',
+            ),
+            GButton(
+              icon: CupertinoIcons.settings,
+              text: 'Settings',
+            )
+          ],
+        ));
   }
 }
 
@@ -117,6 +124,6 @@ class _ChatIconState extends State<ChatIcon> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(Icons.message_outlined);
+    return const Icon(CupertinoIcons.chat_bubble_2);
   }
 }
