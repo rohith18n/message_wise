@@ -9,6 +9,7 @@ import '../../util.dart';
 import '../common/widgets/textformcommon_style.dart';
 
 class UsernameScreen extends StatelessWidget {
+  static String routeName = "/usernamescreen";
   const UsernameScreen({super.key});
 
   @override

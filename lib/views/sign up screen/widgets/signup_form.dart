@@ -1,17 +1,20 @@
 import 'dart:developer';
+import 'package:message_wise/components/custom_formfield.dart';
+import 'package:message_wise/components/default_button.dart';
+import 'package:message_wise/components/text_row.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/sign%20up%20screen/widgets/verify_email_button.dart';
 import 'package:message_wise/views/username%20Screen/username_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../../Controllers/authentication/authentication_bloc.dart';
 import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
-import '../../common/widgets/textformcommon_style.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({
@@ -25,17 +28,25 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _signFormkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Form(
         key: _signFormkey,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          padding: EdgeInsets.symmetric(
+              vertical: getProportionateScreenHeight(20),
+              horizontal: getProportionateScreenWidth(40)),
           child: Column(
             children: [
-              TextFormField(
+              Text("Create New Account", style: headingStyle),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              CustomFormField(
                 controller: _emailController,
+                labelText: "Email",
+                hintText: "Enter your Email",
+                svgIcon: "assets/icons/Mail.svg",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Email is empty";
@@ -45,32 +56,48 @@ class _SignUpFormState extends State<SignUpForm> {
                     return null;
                   }
                 },
-                style: GoogleFonts.poppins(color: colorWhite),
-                decoration: textFormFieldStyle("Enter Email ID"),
+                keyboardType: TextInputType.emailAddress,
               ),
-              sizeHeight15,
-              TextFormField(
-                obscureText: true,
+              SizedBox(height: getProportionateScreenHeight(30)),
+              CustomFormField(
                 controller: _passwordController,
+                labelText: "Password",
+                hintText: "Enter your password",
+                svgIcon: "assets/icons/Lock.svg",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "password is empty";
                   } else if (value.length <= 7) {
-                    return "password must be at least 8 characters";
+                    return "password must contain at least 8 characters";
                   } else {
                     return null;
                   }
                 },
-                style: GoogleFonts.poppins(color: colorWhite),
-                decoration: textFormFieldStyle("enter password"),
+                obscureText: true,
               ),
-              sizeHeight15,
+              SizedBox(height: getProportionateScreenHeight(30)),
+              CustomFormField(
+                controller: _confirmPasswordController,
+                labelText: "Confirm Password",
+                hintText: "Confirm your password",
+                svgIcon: "assets/icons/Lock.svg",
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "password is empty";
+                  } else if (value.length <= 7) {
+                    return "password must contain at least 8 characters";
+                  } else if (value != _passwordController.text) {
+                    return "passwords do not match";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              SizedBox(height: getProportionateScreenHeight(30)),
               BlocConsumer<AuthenticationBloc, AuthenticationState>(
                 listener: (context, state) {
                   if (state is UsernameState) {
-                    log("beforee");
-
-                    log("log hreee");
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
@@ -80,28 +107,26 @@ class _SignUpFormState extends State<SignUpForm> {
                   } else if (state is ValidationErrorState) {
                     showTopSnackBar(
                       Overlay.of(context),
-                      CustomSnackBar.success(
-                        backgroundColor: Colors.red,
+                      CustomSnackBar.error(
                         message: state.exceptionOnLogin,
                       ),
                     );
                   } else if (state is EmailVerificationState) {
-                    log("jjjjjjjjjjjjjjjjjjjjjllllllllll${state.isVerified}");
+                    log("emailverificationstate${state.isVerified}");
                   }
                 },
                 builder: (context, state) {
                   return Column(
                     children: [
                       SizedBox(
-                        width: 300,
                         child: StreamBuilder<User?>(
                             stream: FirebaseAuth.instance.authStateChanges(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return const VerifyEmailButton();
                               } else {
-                                return ElevatedButton(
-                                    onPressed: () async {
+                                return DefaultButton(
+                                    press: () async {
                                       if (_signFormkey.currentState!
                                           .validate()) {
                                         BlocProvider.of<AuthenticationBloc>(
@@ -112,39 +137,27 @@ class _SignUpFormState extends State<SignUpForm> {
                                         ));
                                       }
                                     },
-                                    child:
-                                        const CustomText(content: "Sign Up"));
+                                    text: "Sign Up");
                               }
                             }),
                       ),
                       if (state is EmailVerificationState)
                         const CustomText(
-                          content: "please check mailbox....",
-                          colour: colorWhite,
+                          content: "please check your email",
+                          colour: colorblack,
                         ),
                     ],
                   );
                 },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CustomText(
-                    size: 12,
-                    content: "Already have an account?",
-                    colour: colorWhite,
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        BlocProvider.of<AuthenticationBloc>(context)
-                            .add(LoadLoginScreenEvent());
-                      },
-                      child: const CustomText(
-                        content: "Login",
-                        colour: colorlogo,
-                      ))
-                ],
-              )
+              TextRow(
+                firstText: "Already have an account?",
+                secondText: "Login",
+                press: () {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(LoadLoginScreenEvent());
+                },
+              ),
             ],
           ),
         ));

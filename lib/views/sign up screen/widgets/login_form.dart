@@ -1,14 +1,16 @@
 import 'package:message_wise/Controllers/authentication/authentication_bloc.dart';
+import 'package:message_wise/components/custom_formfield.dart';
+import 'package:message_wise/components/default_button.dart';
+import 'package:message_wise/components/text_row.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/home%20Screen/home_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
-import '../../common/widgets/textformcommon_style.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -28,11 +30,19 @@ class _LoginFormState extends State<LoginForm> {
     return Form(
         key: _loginFormkey,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          padding: EdgeInsets.symmetric(
+              vertical: getProportionateScreenHeight(20),
+              horizontal: getProportionateScreenHeight(40)),
           child: Column(
             children: [
-              TextFormField(
+              Text("Sign In", style: headingStyle),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              CustomFormField(
+                keyboardType: TextInputType.emailAddress,
                 controller: _emailController,
+                labelText: "Email",
+                hintText: "Enter your Email",
+                svgIcon: "assets/icons/Mail.svg",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Email is empty";
@@ -42,24 +52,27 @@ class _LoginFormState extends State<LoginForm> {
                     return null;
                   }
                 },
-                style: GoogleFonts.poppins(color: colorWhite),
-                decoration: textFormFieldStyle("Enter Email ID"),
               ),
-              sizeHeight15,
-              TextFormField(
+
+              SizedBox(height: getProportionateScreenHeight(30)),
+              CustomFormField(
+                obscureText: true,
                 controller: _passwordController,
+                labelText: "Password",
+                hintText: "Enter your password",
+                svgIcon: "assets/icons/Lock.svg",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "password is empty";
                   } else if (value.length <= 7) {
-                    return "password must be at least 8 characters";
+                    return "password must contain at least 8 characters";
                   } else {
                     return null;
                   }
                 },
-                style: GoogleFonts.poppins(color: colorWhite),
-                decoration: textFormFieldStyle("enter password"),
               ),
+
+              SizedBox(height: getProportionateScreenHeight(20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -72,20 +85,18 @@ class _LoginFormState extends State<LoginForm> {
                             .add(LoadingForgotPasswordScreen());
                       },
                       child: CustomText(
-                        content: "forgot password",
-                        colour: colorWhite.withOpacity(0.7),
+                        content: "forgot password?",
+                        size: getProportionateScreenWidth(16),
                       ),
                     ),
                   ),
-                  sizeHeight15,
                 ],
               ),
-              SizedBox(
-                width: 300,
-//block listner
+              SizedBox(height: getProportionateScreenHeight(10)),
+//bloc listner
 //navigate user if login success
 //snack bar on exception
-
+              SizedBox(
                 child: BlocListener<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) {
                     if (state is LoggedState) {
@@ -107,38 +118,28 @@ class _LoginFormState extends State<LoginForm> {
                       );
                     }
                   },
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        if (_loginFormkey.currentState!.validate()) {
-                          BlocProvider.of<AuthenticationBloc>(context)
-                              .add(LoginEvent(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ));
-                        }
-                      },
-                      child: const CustomText(content: "Login")),
+                  child: DefaultButton(
+                    text: "Continue",
+                    press: () async {
+                      if (_loginFormkey.currentState!.validate()) {
+                        BlocProvider.of<AuthenticationBloc>(context)
+                            .add(LoginEvent(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        ));
+                      }
+                    },
+                  ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CustomText(
-                    size: 12,
-                    content: "Doesn'n have an account yet?",
-                    colour: colorWhite,
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        BlocProvider.of<AuthenticationBloc>(context)
-                            .add(LoadSignUpScreenEvent());
-                      },
-                      child: const CustomText(
-                        content: "Sign Up",
-                        colour: colorlogo,
-                      ))
-                ],
-              )
+              TextRow(
+                firstText: "Don't have an account?",
+                secondText: "SignUp",
+                press: () {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(LoadSignUpScreenEvent());
+                },
+              ),
             ],
           ),
         ));

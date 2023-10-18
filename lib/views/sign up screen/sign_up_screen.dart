@@ -1,8 +1,11 @@
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/home%20Screen/home_screen.dart';
 import 'package:message_wise/views/sign%20up%20screen/widgets/forgot_password.dart';
 import 'package:message_wise/views/sign%20up%20screen/widgets/login_form.dart';
 import 'package:message_wise/views/sign%20up%20screen/widgets/signup_form.dart';
+import 'package:message_wise/views/sign%20up%20screen/widgets/socal_card_row.dart';
 import 'package:message_wise/views/username%20Screen/username_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,137 +22,95 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: backroundColor,
-        child: Stack(children: [
-          Image.asset(
-            "assets/images/doodle2.png",
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.low,
-          ),
-          SafeArea(
+      body: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
+              padding: EdgeInsets.symmetric(
+                  vertical: getProportionateScreenHeight(50)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("assets/images/logoText.png"),
-                      ],
-                    ),
+                  CustomText(
+                    content: "Message Wise",
+                    size: getProportionateScreenWidth(36),
+                    colour: kPrimaryColor,
+                    weight: FontWeight.bold,
                   ),
+
                   BlocBuilder<AuthenticationBloc, AuthenticationState>(
                     builder: (context, state) {
                       if (state is LoginState) {
-                        return const CustomText(
-                          content: "LOGIN",
-                          colour: colorWhite,
-                          weight: FontWeight.w600,
-                          size: 25,
-                        );
-                      } else if (state is SignUpState) {
-                        return const CustomText(
-                          content: "SIGN UP",
-                          colour: colorWhite,
-                          weight: FontWeight.w600,
-                          size: 25,
-                        );
-                      }
-                      return const CustomText(
-                        content: "SIGN UP",
-                        colour: colorWhite,
-                        weight: FontWeight.w600,
-                        size: 25,
-                      );
-                    },
-                  ),
-                  BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                    builder: (context, state) {
-                      if (state is LoginState ||
-                          state is ValidationErrorState) {
                         return const LoginForm();
                       } else if (state is SignUpState) {
                         return const SignUpForm();
                       } else if (state is LoadForgotPassowrdState) {
                         return const ForgotPassword();
-                      } else {
-                        return const SignUpForm();
+                      }
+                      //  else if (state is PhoneSignInState) {
+                      //   return const PhoneLogin();
+                      // }
+                      else {
+                        return const LoginForm();
                       }
                     },
                   ),
-//============google Sign up =====================================
+                  //google Sign in
                   BlocListener<AuthenticationBloc, AuthenticationState>(
-                    listener: (context, state) {
-//if user is new navigate to username screeen
-//emit bloc usernamestste
-                      if (state is UsernameState) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const UsernameScreen(),
+                      listener: (context, state) {
+                        //if the user is signing up, will navigate to the username screen
+                        //will emit usernamestate
+                        if (state is UsernameState) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              UsernameScreen.routeName, (route) => false);
+                        }
+                        //it will show at the loading time
+
+                        else if (state is LoadingState) {
+                          showTopSnackBar(
+                            Overlay.of(context),
+                            CustomSnackBar.success(
+                              message: state.isLoading ? "loading" : "success",
                             ),
-                            (route) => false);
-                      }
-//its show the loading time
-//
-                      else if (state is LoadingState) {
-                        showTopSnackBar(
-                          Overlay.of(context),
-                          CustomSnackBar.success(
-                            backgroundColor:
-                                const Color.fromARGB(255, 54, 244, 63),
-                            message: state.isLoading ? "loading" : "success",
-                          ),
-                        );
-                      }
-//if user is not  new navigate to HomeScreen
-//emit bloc signed state
-                      else if (state is SignedState) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                            (route) => false);
-                      } else if (state is ValidationErrorState) {
-                        showTopNotification(
-                            color: Colors.red,
-                            context: context,
-                            state: state.exceptionOnLogin);
-                      } else if (state is ResetPasswordSuccessState) {
-                        showTopNotification(
-                            color: Colors.green,
-                            context: context,
-                            state: "Reset link send on email");
-                      }
-                    },
-//google buttton
-//its triger googleSignevent
-//and button wrapped with bloclistner
-                    child: InkWell(
-                        splashColor: Colors.amber,
-                        onTap: () {
-                          context
-                              .read<AuthenticationBloc>()
-                              .add(GoogleSignInEvent());
-                        },
-                        child: Image.asset("assets/images/googleLogo.png")),
-                  ),
-                  const CustomText(
-                    size: 12,
-                    content: "Sign in with Google",
-                    colour: colorWhite,
-                  ),
+                          );
+                        }
+                        //if user is signed already, will navigate to HomeScreen
+                        //emit bloc signed state
+                        else if (state is SignedState) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              HomeScreen.routeName, (route) => false);
+                        } else if (state is ValidationErrorState) {
+                          showTopNotification(
+                              color: Colors.red,
+                              context: context,
+                              state: state.exceptionOnLogin);
+                        } else if (state is ResetPasswordSuccessState) {
+                          showTopNotification(
+                              color: Colors.green,
+                              context: context,
+                              state:
+                                  "A reset link has been sent to your email");
+                        }
+                        // else if (state is PhoneSignInLoadedState) {
+                        //   Navigator.of(context).pushNamed(HomeScreen.routeName);
+                        // } else if (state is PhoneSignInErrorState) {
+                        //   showTopNotification(
+                        //       color: Colors.red,
+                        //       context: context,
+                        //       state: state.error);
+                        // } else if (state is PhoneAuthCodeSentSuccessState) {
+                        //   Navigator.of(context).pushNamed(OtpScreen.routeName);
+                        // }
+                      },
+                      child: const SocalCardRow()),
                 ],
               ),
             ),
           ),
-        ]),
+        ),
       ),
     );
   }
