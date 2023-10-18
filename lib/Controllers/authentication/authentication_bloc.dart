@@ -18,6 +18,10 @@ class AuthenticationBloc
       emit(SignUpState());
     });
 
+    on<PhoneSignInEvent>((event, emit) {
+      emit(PhoneSignInState());
+    });
+
     on<SignUpEvent>((event, emit) async {
       dynamic isSigned = await AuthService.signin(
           email: event.email, password: event.password);
@@ -108,5 +112,52 @@ class AuthenticationBloc
     //Initial event
     on<AuthenticationInitialEvent>(
         (event, emit) => emit(AuthenticationInitial()));
+
+    on<SendOtpToPhoneEvent>((event, emit) async {
+      emit(LoadingState(isLoading: true));
+      try {
+        await AuthService.logInWithPhone(
+            phoneNumber: event.phoneNumber,
+            verificationCompleted: (PhoneAuthCredential credential) {
+              add(OnPhoneAuthVerificationCompletedEvent(
+                  credential: credential));
+            },
+            verificationFailed: (FirebaseAuthException error) {
+              add(OnPhoneAuthErrorEvent(error: error.toString()));
+            },
+            codeSent: (String verificationId, int? refreshtoken) {
+              add(OnPhoneOtpSentEvent(
+                  verificationId: verificationId, token: refreshtoken));
+            },
+            codeAutoRetrivalTimeOut: (String verificationId) {});
+      } catch (e) {
+        emit(PhoneSignInErrorState(error: e.toString()));
+      }
+    });
+    on<OnPhoneOtpSentEvent>((event, emit) {
+      emit(PhoneAuthCodeSentSuccessState(verificationId: event.verificationId));
+    });
+
+    on<VerifySentOtpEvent>((event, emit) {
+      try {
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: event.verificationId, smsCode: event.otpCode);
+        add(OnPhoneAuthVerificationCompletedEvent(credential: credential));
+      } catch (e) {
+        emit(PhoneSignInErrorState(error: e.toString()));
+      }
+    });
+    on<OnPhoneAuthVerificationCompletedEvent>((event, emit) async {
+      try {
+        await FirebaseAuth.instance
+            .signInWithCredential(event.credential)
+            .then((value) {
+          emit(SignUpScreenOtpSuccessState());
+          emit(PhoneSignInLoadedState());
+        });
+      } catch (e) {
+        emit(PhoneSignInErrorState(error: e.toString()));
+      }
+    });
   }
 }

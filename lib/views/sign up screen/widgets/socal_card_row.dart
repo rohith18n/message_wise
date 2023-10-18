@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:message_wise/Controllers/authentication/authentication_bloc.dart';
+
 import 'package:message_wise/components/socal_card.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
@@ -37,7 +38,7 @@ class SocalCardRow extends StatelessWidget {
             SocalCard(
               icon: "assets/icons/Phone.svg",
               press: () {
-                // context.read<AuthenticationBloc>().add(PhoneSignInEvent());
+                context.read<AuthenticationBloc>().add(PhoneSignInEvent());
               },
             ),
             CustomText(

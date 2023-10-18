@@ -78,3 +78,50 @@ class ResetPasswordSuccessState extends AuthenticationState {
   @override
   List<Object?> get props => [];
 }
+
+class PhoneSignInState extends AuthenticationState {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class InitialPhoneSignInState extends AuthenticationState {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class PhoneSignInLoadedState extends AuthenticationState {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class PhoneAuthCodeSentSuccessState extends AuthenticationState {
+  final String verificationId;
+
+  const PhoneAuthCodeSentSuccessState({required this.verificationId});
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class PhoneSignInErrorState extends AuthenticationState {
+  final String error;
+
+  const PhoneSignInErrorState({required this.error});
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class SuccessPhoneSignInState extends AuthenticationState {
+  final User user;
+
+  const SuccessPhoneSignInState(this.user);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SignUpScreenOtpSuccessState extends AuthenticationState {
+  @override
+  List<Object?> get props => [];
+}

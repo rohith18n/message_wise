@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:message_wise/components/default_button.dart';
 import '../../../Controllers/authentication/authentication_bloc.dart';
-import '../../common/widgets/custom_text.dart';
 
 class VerifyEmailButton extends StatefulWidget {
   const VerifyEmailButton({
@@ -47,14 +47,12 @@ class _VerifyEmailButtonState extends State<VerifyEmailButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {
+    return DefaultButton(
+        press: () {
           if (isEmailVerified) {
             context.read<AuthenticationBloc>().add(VerifiedUserEvent());
           }
         },
-        child: isEmailVerified
-            ? const CustomText(content: "Continue")
-            : const CustomText(content: "check on mail box"));
+        text: isEmailVerified ? "Continue" : "Please check your email");
   }
 }

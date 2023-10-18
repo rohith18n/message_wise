@@ -61,3 +61,58 @@ class AuthenticationInitialEvent extends AuthenticationEvent {
   @override
   List<Object?> get props => [];
 }
+
+class PhoneSignInEvent extends AuthenticationEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class SendOtpToPhoneEvent extends AuthenticationEvent {
+  final String phoneNumber;
+
+  const SendOtpToPhoneEvent({required this.phoneNumber});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class OnPhoneOtpSentEvent extends AuthenticationEvent {
+  final String verificationId;
+  final int? token;
+
+  const OnPhoneOtpSentEvent({
+    required this.verificationId,
+    required this.token,
+  });
+
+  @override
+  List<Object?> get props => [];
+}
+
+class VerifySentOtpEvent extends AuthenticationEvent {
+  final String otpCode;
+  final String verificationId;
+
+  const VerifySentOtpEvent(
+      {required this.otpCode, required this.verificationId});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class OnPhoneAuthErrorEvent extends AuthenticationEvent {
+  final String error;
+  const OnPhoneAuthErrorEvent({required this.error});
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class OnPhoneAuthVerificationCompletedEvent extends AuthenticationEvent {
+  final AuthCredential credential;
+
+  const OnPhoneAuthVerificationCompletedEvent({required this.credential});
+
+  @override
+  List<Object?> get props => [];
+}

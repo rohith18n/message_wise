@@ -2,8 +2,10 @@ import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/home%20Screen/home_screen.dart';
+import 'package:message_wise/views/otp_screen/otp_screen.dart';
 import 'package:message_wise/views/sign%20up%20screen/widgets/forgot_password.dart';
 import 'package:message_wise/views/sign%20up%20screen/widgets/login_form.dart';
+import 'package:message_wise/views/sign%20up%20screen/widgets/phone_login.dart';
 import 'package:message_wise/views/sign%20up%20screen/widgets/signup_form.dart';
 import 'package:message_wise/views/sign%20up%20screen/widgets/socal_card_row.dart';
 import 'package:message_wise/views/username%20Screen/username_screen.dart';
@@ -49,11 +51,9 @@ class SignUpScreen extends StatelessWidget {
                         return const SignUpForm();
                       } else if (state is LoadForgotPassowrdState) {
                         return const ForgotPassword();
-                      }
-                      //  else if (state is PhoneSignInState) {
-                      //   return const PhoneLogin();
-                      // }
-                      else {
+                      } else if (state is PhoneSignInState) {
+                        return const PhoneLogin();
+                      } else {
                         return const LoginForm();
                       }
                     },
@@ -93,17 +93,16 @@ class SignUpScreen extends StatelessWidget {
                               context: context,
                               state:
                                   "A reset link has been sent to your email");
+                        } else if (state is PhoneSignInLoadedState) {
+                          Navigator.of(context).pushNamed(HomeScreen.routeName);
+                        } else if (state is PhoneSignInErrorState) {
+                          showTopNotification(
+                              color: Colors.red,
+                              context: context,
+                              state: state.error);
+                        } else if (state is PhoneAuthCodeSentSuccessState) {
+                          Navigator.of(context).pushNamed(OtpScreen.routeName);
                         }
-                        // else if (state is PhoneSignInLoadedState) {
-                        //   Navigator.of(context).pushNamed(HomeScreen.routeName);
-                        // } else if (state is PhoneSignInErrorState) {
-                        //   showTopNotification(
-                        //       color: Colors.red,
-                        //       context: context,
-                        //       state: state.error);
-                        // } else if (state is PhoneAuthCodeSentSuccessState) {
-                        //   Navigator.of(context).pushNamed(OtpScreen.routeName);
-                        // }
                       },
                       child: const SocalCardRow()),
                 ],

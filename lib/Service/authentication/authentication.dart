@@ -76,4 +76,24 @@ class AuthService {
     }
     return null;
   }
+
+  static Future<dynamic> logInWithPhone({
+    required String phoneNumber,
+    required Function(PhoneAuthCredential) verificationCompleted,
+    required Function(FirebaseAuthException) verificationFailed,
+    required Function(String, int?) codeSent,
+    required Function(String) codeAutoRetrivalTimeOut,
+  }) async {
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrivalTimeOut,
+      );
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    }
+  }
 }
