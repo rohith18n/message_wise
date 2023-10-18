@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "380431189866",
+    "project_id": "messagewise-1700d",
+    "storage_bucket": "messagewise-1700d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380431189866:android:5c6d2de6566c7064e60713",
+        "android_client_info": {
+          "package_name": "com.example.message_wise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrJkW7KI-N7vbL6kD-RTyWwlNEsjkuNiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
