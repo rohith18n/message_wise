@@ -80,6 +80,13 @@ class ResetPasswordSuccessState extends AuthenticationState {
 }
 
 class PhoneSignInState extends AuthenticationState {
+  const PhoneSignInState();
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class PhoneSignInLoadingState extends AuthenticationState {
   @override
   List<Object?> get props => throw UnimplementedError();
 }

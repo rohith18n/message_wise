@@ -120,6 +120,7 @@ class AuthenticationBloc
             phoneNumber: event.phoneNumber,
             verificationCompleted: (PhoneAuthCredential credential) {
               add(OnPhoneAuthVerificationCompletedEvent(
+                  //when entered otp is correct
                   credential: credential));
             },
             verificationFailed: (FirebaseAuthException error) {
@@ -127,7 +128,9 @@ class AuthenticationBloc
             },
             codeSent: (String verificationId, int? refreshtoken) {
               add(OnPhoneOtpSentEvent(
-                  verificationId: verificationId, token: refreshtoken));
+                  //captcha verification
+                  verificationId: verificationId,
+                  token: refreshtoken));
             },
             codeAutoRetrivalTimeOut: (String verificationId) {});
       } catch (e) {
@@ -147,6 +150,11 @@ class AuthenticationBloc
         emit(PhoneSignInErrorState(error: e.toString()));
       }
     });
+
+    on<OnPhoneAuthErrorEvent>((event, emit) {
+      emit(PhoneSignInErrorState(error: event.error.toString()));
+    });
+
     on<OnPhoneAuthVerificationCompletedEvent>((event, emit) async {
       try {
         await FirebaseAuth.instance

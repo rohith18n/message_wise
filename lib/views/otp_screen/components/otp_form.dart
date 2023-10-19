@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:message_wise/Controllers/authentication/authentication_bloc.dart';
+
 import 'package:message_wise/components/default_button.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
@@ -132,16 +133,18 @@ class OtpFormState extends State<OtpForm> {
                 press: () async {
                   BlocListener<AuthenticationBloc, AuthenticationState>(
                     listener: (context, state) {
-                      // String otpCode = _otpController1.text.trim() +
-                      //     _otpController2.text.trim() +
-                      //     _otpController3.text.trim() +
-                      //     _otpController4.text.trim() +
-                      //     _otpController5.text.trim() +
-                      //     _otpController6.text.trim();
-                      // BlocProvider.of<AuthenticationBloc>(context).add(
-                      //     VerifySentOtpEvent(
-                      //         otpCode: otpCode,
-                      //         verificationId:state.verificationId));
+                      if (state is PhoneAuthCodeSentSuccessState) {
+                        String otpCode = _otpController1.text.trim() +
+                            _otpController2.text.trim() +
+                            _otpController3.text.trim() +
+                            _otpController4.text.trim() +
+                            _otpController5.text.trim() +
+                            _otpController6.text.trim();
+                        BlocProvider.of<AuthenticationBloc>(context).add(
+                            VerifySentOtpEvent(
+                                otpCode: otpCode,
+                                verificationId: state.verificationId));
+                      }
                     },
                   );
                 },
