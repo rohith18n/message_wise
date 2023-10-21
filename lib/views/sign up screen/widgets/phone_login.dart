@@ -17,7 +17,7 @@ class PhoneLogin extends StatefulWidget {
 }
 
 class _PhoneLoginState extends State<PhoneLogin> {
-  final RegExp phoneNumberRegex = RegExp(r'^\+91[0-9]{10}$');
+  final RegExp phoneNumberRegex = RegExp(r'^[0-9]{10}$');
   final _phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                         if (phoneFormkey.currentState!.validate()) {
                           BlocProvider.of<AuthenticationBloc>(context).add(
                               SendOtpToPhoneEvent(
-                                  phoneNumber: _phoneController.text));
+                                  phoneNumber: "+91${_phoneController.text}"));
                         }
                       },
                       text: "continue"),
