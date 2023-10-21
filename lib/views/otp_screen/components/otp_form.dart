@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:message_wise/Controllers/authentication/authentication_bloc.dart';
@@ -63,12 +65,12 @@ class OtpFormState extends State<OtpForm> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: SizeConfig.screenHeight * 0.25),
+            SizedBox(height: SizeConfig.screenHeight * 0.05),
             CustomText(
               size: getProportionateScreenWidth(18),
               content: "Enter your otp",
             ),
-            SizedBox(height: SizeConfig.screenHeight * 0.03),
+            SizedBox(height: SizeConfig.screenHeight * 0.13),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -117,7 +119,7 @@ class OtpFormState extends State<OtpForm> {
                     }),
               ],
             ),
-            SizedBox(height: SizeConfig.screenHeight * 0.15),
+            SizedBox(height: SizeConfig.screenHeight * 0.2),
             BlocListener<AuthenticationBloc, AuthenticationState>(
               listener: (context, state) {
                 if (state is PhoneSignInLoadedState) {
@@ -140,10 +142,15 @@ class OtpFormState extends State<OtpForm> {
                             _otpController4.text.trim() +
                             _otpController5.text.trim() +
                             _otpController6.text.trim();
+
                         BlocProvider.of<AuthenticationBloc>(context).add(
                             VerifySentOtpEvent(
                                 otpCode: otpCode,
                                 verificationId: state.verificationId));
+                      }
+                      if (state is PhoneSignInLoadedState) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, HomeScreen.routeName, (route) => false);
                       }
                     },
                   );

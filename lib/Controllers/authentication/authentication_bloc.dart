@@ -19,7 +19,7 @@ class AuthenticationBloc
     });
 
     on<PhoneSignInEvent>((event, emit) {
-      emit(PhoneSignInState());
+      emit(const PhoneSignInState());
     });
 
     on<SignUpEvent>((event, emit) async {

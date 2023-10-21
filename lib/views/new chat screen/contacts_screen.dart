@@ -41,7 +41,7 @@ class ContactScreen extends StatelessWidget {
                     constraints: const BoxConstraints(minWidth: 50),
                     child: Row(
                       children: [
-                        const CustomText(content: "Request"),
+                        const CustomText(content: "Requests"),
                         ValueListenableBuilder(
                           valueListenable: requestCount,
                           builder: (context, value, child) => value == 0
@@ -78,17 +78,17 @@ class ContactScreen extends StatelessWidget {
                 BlocConsumer<UsersBloc, UsersState>(listener: (context, state) {
               log(" here   ${state.toString()}");
             }, builder: (context, state) {
-              final List<UserModels> bots = [];
+              final List<UserModels> requestedUsers = [];
               if (state is OtherUsers) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   for (var bot in state.bots) {
                     if (bot.state == UserConnections.request) {
-                      bots.add(bot);
+                      requestedUsers.add(bot);
                     }
                   }
                 });
 
-                requestCount.value = bots.length;
+                requestCount.value = requestedUsers.length;
                 return TabBarView(
                   children: [
                     UsersListInContact(
@@ -96,7 +96,7 @@ class ContactScreen extends StatelessWidget {
                       iscontactScreen: true,
                     ),
                     UsersListInContact(
-                      users: bots,
+                      users: requestedUsers,
                       iscontactScreen: true,
                     ),
                   ],

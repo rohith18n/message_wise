@@ -60,17 +60,17 @@ class _UsersListInContactState extends State<UsersListInContact> {
                   listenWhen: (previous, current) =>
                       previous != current || previous == current,
                   listener: (context, state) {
-                    if (state is ChatFirstState) {
-                      log("Chat enter event");
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => IndividualChatScreen(
-                              person: state.bot,
-                              roomID: state.roomID,
-                            ),
-                          ));
-                    }
+                    // if (state is ChatFirstState) {
+                    //   log("entering to chat");
+                    //   Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => IndividualChatScreen(
+                    //           person: state.bot,
+                    //           roomID: state.roomID,
+                    //         ),
+                    //       ));
+                    // }
                   },
                   child: InkWell(
                     onTap: () {

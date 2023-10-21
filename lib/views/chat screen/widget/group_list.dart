@@ -3,12 +3,10 @@ import 'package:message_wise/Controllers/group%20chat%20bloc/group_bloc.dart';
 import 'package:message_wise/Controllers/group%20functionality/group_functionality_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/search_field.dart';
 
 import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
-import '../../common/widgets/textformcommon_style.dart';
 import '../../group chat screen/group_chat_screen.dart';
 
 class GroupList extends StatelessWidget {
@@ -29,21 +27,6 @@ class GroupList extends StatelessWidget {
           onChanged: (value) async {},
           hintText: "    search username or message",
         ),
-//         SizedBox(
-//           width: 300,
-//           height: 35,
-//           child:
-// //searchbar
-//               TextField(
-//             autofocus: false,
-//             onTap: () {},
-//             controller: _textEditingcontroller,
-//             textAlign: TextAlign.start,
-//             style: GoogleFonts.poppins(color: colorSearchBartext),
-//             decoration: searchBarStyle(hint: "      search chat or username"),
-//             onChanged: (value) async {},
-//           ),
-//         ),
 //list view
         Expanded(
           child: BlocBuilder<GroupBloc, GroupState>(

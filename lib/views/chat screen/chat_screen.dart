@@ -21,25 +21,10 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("chat screeen");
+    log("chat screen");
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // floatingActionButton: Padding(
-        //   padding: const EdgeInsets.all(60.0),
-
-        //   child: ValueListenableBuilder(
-        //     valueListenable: isVisible,
-        //     builder: (context, value, child) => value
-        //         ? FloatingActionButton(
-        //             backgroundColor: Colors.white,
-        //             onPressed: () {},
-        //             child: const Icon(Icons.group_add),
-        //           )
-        //         : const SizedBox.shrink(),
-        //   ),
-        // ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           actions: [
@@ -52,14 +37,14 @@ class ChatScreen extends StatelessWidget {
                       child: IconButton(
                         icon: const Icon(CupertinoIcons.group),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NewGroupScreen(
-                                  connections: connections,
-                                  isAddMemberScreen: false,
-                                ),
-                              ));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => NewGroupScreen(
+                          //         connections: connections,
+                          //         isAddMemberScreen: false,
+                          //       ),
+                          //     ));
                         },
                       ),
                     )

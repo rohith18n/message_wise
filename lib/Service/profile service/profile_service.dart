@@ -14,7 +14,7 @@ class ProfileService {
   Future<dynamic> selectImage() async {
     final result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ["jpg"]);
-    log("selectfile file  function $result");
+    log("selectImage filePicker $result");
     return result;
   }
 
@@ -50,7 +50,7 @@ class ProfileService {
         );
       }
     } on FirebaseException catch (e) {
-      log("uploadfile function error ${e.code}");
+      log("uploadfile error ${e.code}");
       isUploaded = e.code;
     }
 

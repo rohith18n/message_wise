@@ -73,8 +73,8 @@ class ProfileImage extends StatelessWidget {
             right: -16,
             bottom: 0,
             child: SizedBox(
-              height: 39,
-              width: 39,
+              height: getProportionateScreenHeight(39),
+              width: getProportionateScreenHeight(39),
               child: TextButton(
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,

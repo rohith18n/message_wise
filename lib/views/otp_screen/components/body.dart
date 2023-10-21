@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:message_wise/Controllers/authentication/authentication_bloc.dart';
 import 'package:message_wise/constants.dart';
-import 'package:message_wise/controllers/authentication/authentication_bloc.dart';
+
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'otp_form.dart';
