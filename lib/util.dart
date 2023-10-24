@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 //colors
@@ -20,11 +22,11 @@ const Color closeIconColor = Colors.red;
 const Color successColor = Colors.green;
 
 //sized box gap
-Widget sizeHeight15 = const SizedBox(
-  height: 15,
+Widget sizeHeight15 = SizedBox(
+  height: getProportionateScreenHeight(15),
 );
-Widget sizeWidth20 = const SizedBox(
-  width: 20,
+Widget sizeWidth20 = SizedBox(
+  width: getProportionateScreenWidth(20),
 );
 //null image
 const String nullPhoto = "assets/images/nullPhoto.jpeg";
@@ -38,6 +40,24 @@ void showTopNotification(
     CustomSnackBar.success(
       backgroundColor: color,
       message: state,
+    ),
+  );
+}
+
+// for picking up image from gallery
+pickImage(ImageSource source) async {
+  final ImagePicker imagePicker = ImagePicker();
+  XFile? file = await imagePicker.pickImage(source: source);
+  if (file != null) {
+    return await file.readAsBytes();
+  }
+}
+
+// for displaying snackbars
+showSnackBar(BuildContext context, String text) {
+  return ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(text),
     ),
   );
 }

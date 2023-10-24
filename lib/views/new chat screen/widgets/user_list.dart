@@ -36,6 +36,7 @@ class _UsersListInContactState extends State<UsersListInContact> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        sizeHeight15,
         SearchField(
           textEditingcontroller: _textEditingcontroller,
           onChanged: (value) async {
@@ -47,8 +48,9 @@ class _UsersListInContactState extends State<UsersListInContact> {
 
             context.read<SearchBloc>().add(SearchingEvent(query: value));
           },
-          hintText: "    search username or message",
+          hintText: "                  search user ",
         ),
+        sizeHeight15,
 //list view
         Expanded(
           child: ListView.separated(
@@ -60,17 +62,17 @@ class _UsersListInContactState extends State<UsersListInContact> {
                   listenWhen: (previous, current) =>
                       previous != current || previous == current,
                   listener: (context, state) {
-                    // if (state is ChatFirstState) {
-                    //   log("entering to chat");
-                    //   Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => IndividualChatScreen(
-                    //           person: state.bot,
-                    //           roomID: state.roomID,
-                    //         ),
-                    //       ));
-                    // }
+                    if (state is ChatFirstState) {
+                      log("entering to chat");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => IndividualChatScreen(
+                              person: state.bot,
+                              roomID: state.roomID,
+                            ),
+                          ));
+                    }
                   },
                   child: InkWell(
                     onTap: () {

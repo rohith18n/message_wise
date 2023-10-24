@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:message_wise/size_config.dart';
 
 import '../../common/widgets/custom_text.dart';
 import '../../new group screen/new_group_screen.dart';
@@ -10,7 +11,9 @@ class AddMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 40, right: 20),
+      padding: EdgeInsets.only(
+          left: getProportionateScreenWidth(40),
+          right: getProportionateScreenWidth(20)),
       child: Row(
         children: [
           const CustomText(content: "members"),

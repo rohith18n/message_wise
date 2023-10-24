@@ -11,12 +11,12 @@ import 'package:message_wise/Controllers/group%20functionality/group_functionali
 import 'package:message_wise/Controllers/profile/profile_bloc_bloc.dart'
     as _i12;
 import 'package:message_wise/Models/group_model.dart' as _i6;
-import 'package:message_wise/Service/group%20chat/group_chat_service.dart'
+import 'package:message_wise/service/group%20chat/group_chat_service.dart'
     as _i5;
-import 'package:message_wise/Service/group%20service/group_repository.dart'
+import 'package:message_wise/service/group%20service/group_repository.dart'
     as _i8;
-import 'package:message_wise/Service/group%20service/group_service.dart' as _i7;
-import 'package:message_wise/Service/profile%20service/profile_service.dart'
+import 'package:message_wise/service/group%20service/group_service.dart' as _i7;
+import 'package:message_wise/service/profile%20service/profile_service.dart'
     as _i9;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i4;
 import 'package:firebase_auth/firebase_auth.dart' as _i11;

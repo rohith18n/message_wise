@@ -1,7 +1,11 @@
 import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:message_wise/Controllers/chat%20bloc/chat_bloc.dart';
 import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
+import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/individual%20chat%20screen/widgets/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -76,7 +80,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           .update({FirebaseAuth.instance.currentUser!.uid: false});
       log("inactive");
     } else if (state == AppLifecycleState.detached) {
-      log("ditached");
+      log("detached");
     } else {
       log(state.toString());
     }
@@ -93,103 +97,99 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        child: SizedBox(
-          child: Stack(children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection("chatroom")
-                          .doc(widget.roomID)
-                          .collection("chats")
-                          .orderBy("time", descending: true)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                            controller: _scrollController,
-                            reverse: true,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Message(
-                                message: snapshot.data!.docs[index],
-                                uID: _currentuser!.uid,
-                              );
-                            },
-                            itemCount: snapshot.data!.docs.length,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("chatroom")
+                      .doc(widget.roomID)
+                      .collection("chats")
+                      .orderBy("time", descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(
+                            decelerationRate: ScrollDecelerationRate.fast),
+                        controller: _scrollController,
+                        reverse: true,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Message(
+                            message: snapshot.data!.docs[index],
+                            uID: _currentuser!.uid,
                           );
-                        } else {
-                          return const CustomIndicator();
-                        }
-                      }),
-                ),
-                StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('chatroom')
-                        .doc(widget.roomID)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return snapshot.data != null &&
-                                snapshot.data!.data() != null
-                            ? snapshot.data!.data()![widget.person.uid] ==
-                                        false ||
-                                    snapshot.data!.data()![widget.person.uid] ==
-                                        null
-                                ? const SizedBox()
-                                : Image.asset(
-                                    "assets/images/isWatching.png",
-                                    width: 60,
-                                  )
-                            : const SizedBox();
-                      } else {
-                        return const SizedBox();
-                      }
-                    }),
-                Container(
-                    decoration: BoxDecoration(
-                        color: colorWhite,
-                        borderRadius: BorderRadius.circular(10)),
-                    margin:
-                        const EdgeInsets.only(right: 20, left: 20, bottom: 20),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                            width: 260,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: TextField(
-                                controller: _messageController,
-                                style: GoogleFonts.poppins(
-                                    decoration: TextDecoration.none),
-                                decoration: textfieldDecoration(),
-                              ),
-                            )),
-                        const Spacer(),
-                        IconButton(
-                            onPressed: () {
-                              context.read<ChatBloc>().add(SendMessageEvent(
-                                  messages: _messageController.text,
-                                  roomID: widget.roomID));
-                              _messageController.clear();
-                              _scrollController.animateTo(
-                                0.0,
-                                curve: Curves.easeOut,
-                                duration: const Duration(milliseconds: 300),
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.send,
-                              color: colorlogo,
-                            ))
-                      ],
-                    )),
-              ],
+                        },
+                        itemCount: snapshot.data!.docs.length,
+                      );
+                    } else {
+                      return const CustomIndicator();
+                    }
+                  }),
             ),
-          ]),
+            StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('chatroom')
+                    .doc(widget.roomID)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return snapshot.data != null &&
+                            snapshot.data!.data() != null
+                        ? snapshot.data!.data()![widget.person.uid] == false ||
+                                snapshot.data!.data()![widget.person.uid] ==
+                                    null
+                            ? const SizedBox()
+                            : const SizedBox()
+                        : const SizedBox();
+                  } else {
+                    return const SizedBox();
+                  }
+                }),
+            Container(
+                decoration: BoxDecoration(
+                    color: Colors.orange.shade50,
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.all(getProportionateScreenHeight(15)),
+                child: Row(
+                  children: [
+                    SizedBox(
+                        width: getProportionateScreenWidth(260),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: TextField(
+                            controller: _messageController,
+                            style: GoogleFonts.poppins(
+                                decoration: TextDecoration.none),
+                            decoration: textfieldDecoration(),
+                          ),
+                        )),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        context.read<ChatBloc>().add(SendMessageEvent(
+                            messages: _messageController.text,
+                            roomID: widget.roomID));
+                        _messageController.clear();
+                        _scrollController.animateTo(
+                          0.0,
+                          curve: Curves.easeOut,
+                          duration: const Duration(milliseconds: 300),
+                        );
+                      },
+                      child: const CustomText(
+                        content: "Send",
+                        weight: FontWeight.bold,
+                        colour: kPrimaryColor,
+                        size: 18,
+                      ),
+                    )
+                  ],
+                )),
+          ],
         ),
       ),
     );
@@ -200,7 +200,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         disabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
         enabledBorder: InputBorder.none,
-        hintText: "Type here ......",
+        hintText: " Message...",
         border: InputBorder.none,
         errorBorder: InputBorder.none);
   }

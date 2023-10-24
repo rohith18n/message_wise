@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/size_config.dart';
 import '../../../Controllers/group functionality/group_functionality_bloc.dart';
 import '../../../Models/group_model.dart';
 import '../../../util.dart';
@@ -14,7 +16,6 @@ Future<dynamic> showMembers(
       .read<GroupFunctionalityBloc>()
       .add(FetchMembersEvent(groupId: groupId));
   return showModalBottomSheet(
-    backgroundColor: const Color.fromARGB(255, 0, 195, 205),
     context: context,
     builder: (context) =>
         BlocConsumer<GroupFunctionalityBloc, GroupFunctionalityState>(
@@ -24,7 +25,7 @@ Future<dynamic> showMembers(
       builder: (context, state) {
         if (state is MembersLoadedState) {
           if (state.isloading == true) {
-            return const CircularProgressIndicator();
+            return const CustomIndicator();
           } else {
             return Column(
               children: [
@@ -39,18 +40,19 @@ Future<dynamic> showMembers(
                   child: ListView.builder(
                     itemCount: state.members?.length,
                     itemBuilder: (context, index) => SizedBox(
-                      width: 100,
-                      height: 50,
+                      width: getProportionateScreenWidth(100),
+                      height: getProportionateScreenHeight(50),
                       child: Builder(builder: (contextt) {
                         return ListTile(
                           onLongPress: () async {
                             final RelativeRect position =
                                 RelativeRect.fromDirectional(
-                                    textDirection: TextDirection.ltr,
-                                    start: 50,
-                                    top: 300,
-                                    end: 20,
-                                    bottom: 10);
+                              textDirection: TextDirection.ltr,
+                              start: getProportionateScreenWidth(50),
+                              top: getProportionateScreenWidth(300),
+                              end: getProportionateScreenWidth(20),
+                              bottom: getProportionateScreenWidth(10),
+                            );
                             //  admin's actions
                             if (state.currentUser!.isAdmin) {
                               final result = await showActionMenu(
@@ -108,7 +110,7 @@ Future<dynamic> showMembers(
             );
           }
         }
-        return const CircularProgressIndicator();
+        return const CustomIndicator();
       },
     ),
   );

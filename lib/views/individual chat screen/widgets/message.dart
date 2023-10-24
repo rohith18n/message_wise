@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:message_wise/size_config.dart';
 import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
 
@@ -18,7 +19,9 @@ class Message extends StatelessWidget {
             .toString();
 
     return Padding(
-      padding: const EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+      padding: EdgeInsets.symmetric(
+          horizontal: getProportionateScreenWidth(20),
+          vertical: getProportionateScreenHeight(10)),
       child: Container(
           alignment: message['sendby'] == uID
               ? Alignment.centerRight
@@ -30,9 +33,12 @@ class Message extends StatelessWidget {
                   ? colorMessageCurrentuser
                   : colorMessageClientuser,
             ),
-            constraints: const BoxConstraints(minWidth: 20, maxWidth: 200),
+            constraints: BoxConstraints(
+              minWidth: getProportionateScreenWidth(80),
+              maxWidth: getProportionateScreenWidth(200),
+            ),
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(getProportionateScreenWidth(10)),
               child: Column(
                 children: [
                   CustomText(
@@ -55,9 +61,9 @@ class Message extends StatelessWidget {
                       ),
                       message['sendby'] == uID
                           ? const SizedBox.shrink()
-                          : Icon(
+                          : const Icon(
                               Icons.done_all,
-                              color: colorMessageClientText.withOpacity(0.5),
+                              color: colorMessageClientText,
                               size: 15,
                             )
                     ],

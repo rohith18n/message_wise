@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../Service/chat/chat_service.dart';
+import '../../service/chat/chat_service.dart';
 
 part 'users_event.dart';
 part 'users_state.dart';

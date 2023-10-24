@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../Models/select_model.dart';
-import '../../Service/group chat/group_chat_service.dart';
+import '../../service/group chat/group_chat_service.dart';
 part 'group_event.dart';
 part 'group_state.dart';
 

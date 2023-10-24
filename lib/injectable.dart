@@ -11,6 +11,6 @@ Future<void> configureInjection() async {
       () => FirebaseFirestore.instance);
   getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   getIt.init(
-    environment: Environment.prod,
+    environment: Environment.dev,
   );
 }

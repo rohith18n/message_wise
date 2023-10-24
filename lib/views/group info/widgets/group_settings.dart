@@ -1,13 +1,14 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import '../../../Controllers/group functionality/group_functionality_bloc.dart';
 import '../../../Controllers/message permission/msgpermission_cubit.dart';
-import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
 
 class GroupSettings extends StatefulWidget {
@@ -29,7 +30,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         Row(
           children: [
             SizedBox(
-              width: 300,
+              width: getProportionateScreenWidth(300),
               child: ListTile(
                 onTap: () {
                   setState(() {
@@ -37,12 +38,12 @@ class _GroupSettingsState extends State<GroupSettings> {
                   });
                 },
                 leading: const Icon(
-                  Icons.settings,
-                  color: colorWhite,
+                  CupertinoIcons.settings,
+                  color: kTextColor,
                 ),
                 title: const CustomText(
-                  content: "Group settings",
-                  colour: colorWhite,
+                  content: "Group Settings",
+                  colour: kTextColor,
                 ),
               ),
             )
@@ -68,13 +69,13 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 currentState: state.adminOnly));
                       },
                       title: const CustomText(
-                        content: "only admins can message ",
-                        colour: colorWhite,
+                        content: "Only Admins can send Messages ",
+                        colour: kTextColor,
                       ),
                       leading: Radio(
                         value: true,
                         groupValue: state.adminOnly,
-                        activeColor: colorlogo,
+                        activeColor: kPrimaryColor,
                         onChanged: (value) {},
                       ),
                     );
@@ -87,18 +88,18 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 currentState: state.adminOnly));
                       },
                       title: const Text(
-                        'only admins can message ',
+                        'Only Admins can send Messages ',
                       ),
                       leading: Radio(
                         value: true,
                         groupValue: state.adminOnly,
-                        activeColor: colorlogo,
+                        activeColor: kPrimaryColor,
                         onChanged: (value) {},
                       ),
                     );
                   }
                 } else {
-                  return const CircularProgressIndicator();
+                  return const CustomIndicator();
                 }
               },
             ),

@@ -1,4 +1,8 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member, must_be_immutable
+
 import 'dart:developer';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/search_field.dart';
@@ -8,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Controllers/group functionality/group_functionality_bloc.dart';
 import '../../Models/select_model.dart';
 import '../../Models/user_model.dart';
-import '../new group name screen/name_screen.dart';
+import '../create_group_screen/name_screen.dart';
 
 ValueNotifier<List<SelectModel>> selectedBots = ValueNotifier([]);
 ValueNotifier<List<SelectModel>> bots = ValueNotifier([]);
@@ -84,9 +88,9 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
         title: BlocBuilder<GroupFunctionalityBloc, GroupFunctionalityState>(
           builder: (context, state) {
             if (!widget.isAddMemberScreen) {
-              return const CustomText(
-                content: "new group",
-                colour: colorblack,
+              return Text(
+                "New Group",
+                style: appBarHeadingStyle,
               );
             } else if (state is ProvideUserListState) {
               if (!state.isLoading) {
@@ -100,23 +104,23 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
                 bots.notifyListeners();
                 const CustomText(
                   content: "Add Members",
-                  colour: colorWhite,
+                  colour: kTextColor,
                 );
               } else {
                 return const CustomText(
                   content: "Add Members",
-                  colour: colorWhite,
+                  colour: kTextColor,
                 );
               }
             } else {
               return const CustomText(
                 content: "Add Members",
-                colour: colorWhite,
+                colour: kTextColor,
               );
             }
             return const CustomText(
               content: "Add Members",
-              colour: colorWhite,
+              colour: kTextColor,
             );
           },
         ),
@@ -188,7 +192,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
 
                       title: CustomText(
                         content: searchresult[index].bot.username ?? "",
-                        colour: colorWhite,
+                        colour: kTextColor,
                       ),
                     ),
                   ),
@@ -202,9 +206,9 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   }
 }
 
-///floating action button
-///here is function work
-///
+//floating action button
+// the function  will work here
+
 class FloatingNavigationButton extends StatelessWidget {
   FloatingNavigationButton(
       {super.key, required this.isAddScreen, this.gName, this.groupId});
@@ -215,7 +219,7 @@ class FloatingNavigationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 50),
+      padding: EdgeInsets.only(top: getProportionateScreenHeight(50)),
       child: FloatingActionButton(
         mini: true,
         onPressed: () {
@@ -257,7 +261,7 @@ class SelectedTiles extends StatelessWidget {
       valueListenable: selectedBots,
       builder: (context, selected, child) => selected.isNotEmpty
           ? Container(
-              height: 70,
+              height: getProportionateScreenHeight(70),
               alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.all(5.0),

@@ -39,20 +39,10 @@ class CustomTileTrailing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CircleAvatar(
-          backgroundColor: Colors.green,
-          radius: getProportionateScreenWidth(10),
-          child: Center(
-              child: CustomText(
-            content: "1",
-            colour: kTextColor,
-            size: getProportionateScreenHeight(10),
-          )),
-        ),
-        const CustomText(
-          content: "5:11",
+        CustomText(
+          content: currentTime(),
           colour: kTextColor,
         )
       ],

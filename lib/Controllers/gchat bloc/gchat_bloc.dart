@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../Models/group_model.dart';
 import '../../Models/message_model.dart';
-import '../../Service/group chat/group_chat_service.dart';
+import '../../service/group chat/group_chat_service.dart';
 part 'gchat_event.dart';
 part 'gchat_state.dart';
 

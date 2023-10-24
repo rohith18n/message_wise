@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
-import 'package:message_wise/views/call%20screen/call_screen.dart';
 import 'package:message_wise/views/chat%20screen/chat_screen.dart';
 import 'package:message_wise/views/new%20chat%20screen/contacts_screen.dart';
+import 'package:message_wise/views/posts_screen/feed_screen.dart';
 import 'package:message_wise/views/settings%20screen/settings_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +17,8 @@ class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
   HomeScreen({super.key});
   final List screens = [
-    const CallScreen(),
+    // const CallScreen(),
+    const FeedScreen(),
     ChatScreen(),
     ContactScreen(),
     SettingsScreen(),
@@ -42,8 +43,8 @@ class HomeScreen extends StatelessWidget {
           },
           tabs: const [
             GButton(
-              icon: CupertinoIcons.phone,
-              text: 'Calls',
+              icon: CupertinoIcons.camera,
+              text: 'Feeds',
             ),
             GButton(
               icon: CupertinoIcons.chat_bubble_2,
@@ -51,7 +52,7 @@ class HomeScreen extends StatelessWidget {
             ),
             GButton(
               icon: CupertinoIcons.person_2,
-              text: 'Contacts',
+              text: 'All Users',
             ),
             GButton(
               icon: CupertinoIcons.settings,

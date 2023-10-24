@@ -2,6 +2,7 @@ import 'package:message_wise/Models/message_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:message_wise/size_config.dart';
 import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
 
@@ -36,10 +37,16 @@ class GroupMessage extends StatelessWidget {
                   ? colorMessageCurrentuser
                   : colorMessageClientuser,
             ),
-            constraints: const BoxConstraints(
-                minWidth: 40, minHeight: 30, maxWidth: 200),
+            constraints: BoxConstraints(
+              minWidth: getProportionateScreenWidth(40),
+              minHeight: getProportionateScreenWidth(30),
+              maxWidth: getProportionateScreenWidth(200),
+            ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenWidth(10),
+                vertical: getProportionateScreenWidth(6),
+              ),
               child: Column(
                 children: [
                   message.sendby == uID
@@ -53,8 +60,8 @@ class GroupMessage extends StatelessWidget {
                                   ? const AssetImage(nullPhoto) as ImageProvider
                                   : NetworkImage(message.image ?? ""),
                             ),
-                            const SizedBox(
-                              width: 5,
+                            SizedBox(
+                              width: getProportionateScreenWidth(5),
                             ),
                             CustomText(
                                 content: message.username,

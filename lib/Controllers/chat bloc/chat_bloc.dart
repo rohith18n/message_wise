@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:message_wise/Models/user_model.dart';
-import 'package:message_wise/Service/chat/chat_service.dart';
+import 'package:message_wise/service/chat/chat_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 part 'chat_event.dart';
@@ -11,8 +11,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc() : super(ChatInitial()) {
     final chatService = ChatService();
 
-    /// enter event that time create room id
-    /// and check user is online or not and live ithe chat
+    // event to create room id
+    // and checking whether user is online or not
     on<EnterToChatEvent>((event, emit) async {
       String roomID = await chatService.onCreateRoomId(event.bot.uid);
 
@@ -36,11 +36,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         }
       });
     });
-    //online anf offline event
+    //online offline events
 
     on<OnlineEvent>((event, emit) => emit(OnlineState()));
     on<OfflineEvent>((event, emit) => emit(OfflineState()));
-    //===================================================================
+
     on<SendMessageEvent>((event, emit) async {
       chatService.onMessaging(message: event.messages, roomID: event.roomID);
     });

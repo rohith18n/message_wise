@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:message_wise/Models/user_model.dart';
-import 'package:message_wise/Service/group%20service/group_service.dart';
+import 'package:message_wise/service/group%20service/group_service.dart';
 import 'package:message_wise/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';

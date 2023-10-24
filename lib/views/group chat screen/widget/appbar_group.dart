@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:message_wise/constants.dart';
 
 import '../../../Models/group_model.dart';
 import '../../../util.dart';
@@ -18,7 +19,6 @@ class AppBarForGroup extends StatelessWidget {
           },
           icon: const Icon(
             Icons.arrow_back,
-            color: colorWhite,
           )),
       title: InkWell(
         onTap: () {},
@@ -27,7 +27,7 @@ class AppBarForGroup extends StatelessWidget {
           children: [
             CustomText(
               content: groupData.name,
-              colour: colorWhite,
+              colour: kTextColor,
             ),
           ],
         ),

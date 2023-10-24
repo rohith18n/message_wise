@@ -13,7 +13,7 @@ class AuthService {
 
       return true;
     } on FirebaseAuthException catch (e) {
-      log("login errot ${e.code}");
+      log("login error ${e.code}");
       return e.code;
     }
   }
@@ -22,7 +22,7 @@ class AuthService {
   static Future<dynamic> signin(
       {required String email, required String password}) async {
     try {
-      log("heloooggggg");
+      log("signing in");
       final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email.trim(), password: password.trim());
 

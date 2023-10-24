@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:message_wise/Models/user_model.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/user_list.dart';
 
@@ -27,42 +29,46 @@ class ContactScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          title: Padding(
+            padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
+            child: Text(
+              "All Users",
+              style: appBarHeadingStyle,
+            ),
+          ),
           bottom: TabBar(
-              unselectedLabelColor: colorWhite.withOpacity(0.5),
+              unselectedLabelColor: kTextColor,
               isScrollable: true,
-              splashBorderRadius: BorderRadius.circular(30),
-              labelColor: colorWhite,
-              dividerColor: Colors.transparent,
-              indicatorColor: Colors.transparent,
+              labelColor: colorblack,
+              labelPadding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(60)),
+              indicatorColor: kPrimaryColor,
               tabs: [
                 const Tab(child: CustomText(content: "All Users")),
                 Tab(
-                  child: Container(
-                    constraints: const BoxConstraints(minWidth: 50),
-                    child: Row(
-                      children: [
-                        const CustomText(content: "Requests"),
-                        ValueListenableBuilder(
-                          valueListenable: requestCount,
-                          builder: (context, value, child) => value == 0
-                              ? const SizedBox.shrink()
-                              : Container(
-                                  margin: const EdgeInsets.only(left: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(40),
+                  child: Row(
+                    children: [
+                      const CustomText(content: "Requests"),
+                      ValueListenableBuilder(
+                        valueListenable: requestCount,
+                        builder: (context, value, child) => value == 0
+                            ? const SizedBox.shrink()
+                            : Container(
+                                margin: const EdgeInsets.only(left: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: CustomText(
+                                    content: value.toString(),
+                                    size: 10,
+                                    colour: colorMessageClientTextWhite,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(3.0),
-                                    child: CustomText(
-                                      content: value.toString(),
-                                      size: 10,
-                                      colour: colorMessageClientTextWhite,
-                                    ),
-                                  )),
-                        )
-                      ],
-                    ),
+                                )),
+                      )
+                    ],
                   ),
                 ),
               ]),

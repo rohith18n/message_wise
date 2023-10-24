@@ -2,14 +2,17 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:message_wise/Models/user_model.dart';
 import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/chat%20screen/widget/custom_tab_bar.dart';
 import 'package:message_wise/views/chat%20screen/widget/group_list.dart';
+import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/user_list.dart';
 import 'package:message_wise/views/new%20group%20screen/new_group_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:message_wise/views/posts_screen/add_posts_screen.dart';
 import '../../util.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -26,30 +29,36 @@ class ChatScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          title: Padding(
+            padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
+            child: Text(
+              "Chats",
+              style: appBarHeadingStyle,
+            ),
+          ),
           automaticallyImplyLeading: false,
           actions: [
             ValueListenableBuilder(
-              valueListenable: isVisible,
-              builder: (BuildContext context, value, Widget? child) => value
-                  ? Padding(
-                      padding: EdgeInsets.only(
-                          right: getProportionateScreenWidth(20)),
-                      child: IconButton(
-                        icon: const Icon(CupertinoIcons.group),
-                        onPressed: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => NewGroupScreen(
-                          //         connections: connections,
-                          //         isAddMemberScreen: false,
-                          //       ),
-                          //     ));
-                        },
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            )
+                valueListenable: isVisible,
+                builder: (BuildContext context, value, Widget? child) => value
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                            right: getProportionateScreenWidth(20)),
+                        child: IconButton(
+                          icon: const Icon(CupertinoIcons.group),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NewGroupScreen(
+                                    connections: connections,
+                                    isAddMemberScreen: false,
+                                  ),
+                                ));
+                          },
+                        ),
+                      )
+                    : const SizedBox.shrink())
           ],
           bottom: PreferredSize(
               preferredSize: Size.fromHeight(getProportionateScreenHeight(40)),

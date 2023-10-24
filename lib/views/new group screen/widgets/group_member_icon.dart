@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member, must_be_immutable
 
+import 'package:flutter/material.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import '../../../Models/select_model.dart';
 import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
@@ -15,7 +18,9 @@ class GroupMembersIcon extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          constraints: const BoxConstraints(minWidth: 80, minHeight: 50),
+          constraints: BoxConstraints(
+              minWidth: getProportionateScreenWidth(80),
+              minHeight: getProportionateScreenHeight(50)),
           child: Column(
             children: [
               CircleAvatar(
@@ -25,12 +30,13 @@ class GroupMembersIcon extends StatelessWidget {
                     : NetworkImage(bot.bot.photo ?? ""),
               ),
               Container(
-                  constraints:
-                      const BoxConstraints(maxWidth: 60, maxHeight: 20),
+                  constraints: BoxConstraints(
+                      maxWidth: getProportionateScreenWidth(60),
+                      maxHeight: getProportionateScreenHeight(20)),
                   child: CustomText(
                     content: bot.bot.username ?? "",
-                    colour: colorWhite,
-                    size: 10,
+                    colour: kTextColor,
+                    size: getProportionateScreenHeight(10),
                   ))
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:message_wise/size_config.dart';
 
 const kPrimaryColor = Color(0xFFFF7643);
@@ -20,6 +21,12 @@ final headingStyle = GoogleFonts.poppins(
   color: Colors.black,
   height: getProportionateScreenHeight(1.5),
 );
+final appBarHeadingStyle = GoogleFonts.poppins(
+  fontSize: getProportionateScreenWidth(20),
+  fontWeight: FontWeight.bold,
+  color: Colors.black,
+  height: getProportionateScreenHeight(1.5),
+);
 
 const defaultDuration = Duration(milliseconds: 250);
 
@@ -36,4 +43,10 @@ OutlineInputBorder outlineInputBorder() {
     borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
     borderSide: const BorderSide(color: kTextColor),
   );
+}
+
+String currentTime() {
+  final now = DateTime.now();
+  final formatter = DateFormat('HH:mm');
+  return formatter.format(now);
 }

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:message_wise/Service/profile%20service/profile_service.dart';
+import 'package:message_wise/service/profile%20service/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 

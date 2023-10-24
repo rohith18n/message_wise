@@ -52,7 +52,7 @@ class ChatService {
 
   Future onMessaging({required String message, required String roomID}) async {
     final String currentUser = FirebaseAuth.instance.currentUser!.uid;
-    log(" on message log $roomID");
+    log(" on message log roomID $roomID");
     Map<String, dynamic> messages = {
       "message": message,
       "sendby": currentUser,

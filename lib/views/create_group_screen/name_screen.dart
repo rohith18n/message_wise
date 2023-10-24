@@ -1,10 +1,16 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:message_wise/Controllers/group%20chat%20bloc/group_bloc.dart';
 import 'package:message_wise/Models/select_model.dart';
-import 'package:message_wise/Service/profile%20service/profile_service.dart';
+import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/service/profile%20service/profile_service.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/injectable.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/home%20Screen/home_screen.dart';
 import 'package:message_wise/views/new%20group%20screen/widgets/group_member_icon.dart';
 import 'package:file_picker/file_picker.dart';
@@ -34,20 +40,18 @@ class NameScreen extends StatelessWidget {
             imagePath: imagePath.value),
       ),
       appBar: AppBar(
-        title: const CustomText(
-          content: "new group",
-          colour: kTextColor,
-        ),
+        title: Text("Create Group", style: appBarHeadingStyle),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding:
+            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: Column(
           children: [
             Stack(
               children: [
                 SizedBox(
-                  width: 200,
-                  height: 200,
+                  width: getProportionateScreenWidth(200),
+                  height: getProportionateScreenHeight(200),
                   child: ValueListenableBuilder(
                     valueListenable: imagePath,
                     builder: (context, value, child) => CircleAvatar(
@@ -59,32 +63,55 @@ class NameScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned.fill(
-                    child: IconButton(
-                        onPressed: () async {
-                          imagePath.value =
-                              await getIt<ProfileService>().selectImage();
-                        },
-                        icon: const Icon(
-                          Icons.camera_enhance,
-                          size: 40,
-                        ))),
+                Positioned(
+                  right: -16,
+                  bottom: 0,
+                  child: SizedBox(
+                    height: getProportionateScreenHeight(39),
+                    width: getProportionateScreenHeight(39),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: const BorderSide(color: Colors.white),
+                        ),
+                        backgroundColor: const Color(0xFFF5F6F9),
+                      ),
+                      onPressed: () async {
+                        imagePath.value =
+                            await getIt<ProfileService>().selectImage();
+                      },
+                      child: SvgPicture.asset("assets/icons/Camera Icon.svg"),
+                    ),
+                  ),
+                ),
+                // Positioned.fill(
+                //     child: IconButton(
+                //         onPressed: () async {
+                //           imagePath.value =
+                //               await getIt<ProfileService>().selectImage();
+                //         },
+                //         icon: const Icon(
+                //           CupertinoIcons.camera,
+                //           size: 20,
+                //         ))),
               ],
             ),
             sizeHeight15,
             SizedBox(
-              width: 200,
-              height: 40,
+              width: getProportionateScreenWidth(200),
+              height: getProportionateScreenHeight(40),
               child: TextField(
                 controller: textController,
-                style: GoogleFonts.poppins(color: colorWhite),
-                decoration: textFormFieldStyle("Enter Group Name"),
+                style: GoogleFonts.poppins(color: kTextColor),
+                decoration: textFormFieldStyle("Group Name"),
               ),
             ),
             sizeHeight15,
-            CustomText(
-              content: "participants",
-              colour: colorWhite.withOpacity(0.5),
+            const CustomText(
+              content: "Participants",
+              colour: kTextColor,
             ),
             sizeHeight15,
             Expanded(
@@ -124,7 +151,7 @@ class _FloatingButtonState extends State<FloatingButton> {
   Color buttoncolor = successColor;
   @override
   void dispose() {
-    log("disposseddd");
+    log("disposed");
 
     textController.clear();
     super.dispose();
@@ -152,19 +179,13 @@ class _FloatingButtonState extends State<FloatingButton> {
         child: BlocConsumer<GroupBloc, GroupState>(
           listener: (context, state) {
             if (state is SuccessState) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(),
-                  ),
-                  (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomeScreen.routeName, (route) => false);
             }
           },
           builder: (context, state) {
             if (state is LoadingState) {
-              return const CircularProgressIndicator(
-                color: colorMessageClientTextWhite,
-              );
+              return const CustomIndicator();
             } else {
               return const Icon(
                 Icons.check,

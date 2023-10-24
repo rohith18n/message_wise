@@ -1,5 +1,8 @@
 import 'dart:developer';
 import 'package:message_wise/Controllers/message%20permission/msgpermission_cubit.dart';
+import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/group%20chat%20screen/widget/group_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,7 +33,6 @@ class GroupChatScreen extends StatelessWidget {
 
     return Scaffold(
       extendBody: true,
-      backgroundColor: backroundColor,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: InkWell(
@@ -46,18 +48,11 @@ class GroupChatScreen extends StatelessWidget {
               groupData: groupData,
             ),
           )),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        color: backroundColor,
         child: SizedBox(
           child: Stack(children: [
-            Image.asset(
-              "assets/images/doodle2.png",
-              width: double.infinity,
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.low,
-            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,9 +89,9 @@ class GroupChatScreen extends StatelessWidget {
                                 },
                                 itemCount: state.allmessages.length,
                               )
-                            : const CircularProgressIndicator();
+                            : const CustomIndicator();
                       } else {
-                        return const Center(child: CircularProgressIndicator());
+                        return const CustomIndicator();
                       }
                     },
                   ),
@@ -114,21 +109,23 @@ class GroupChatScreen extends StatelessWidget {
                       } else {
                         return Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.only(
-                              right: 20, left: 20, bottom: 20),
+                          padding: EdgeInsets.only(
+                            right: getProportionateScreenWidth(20),
+                            left: getProportionateScreenWidth(20),
+                            bottom: getProportionateScreenWidth(20),
+                          ),
                           decoration: BoxDecoration(
-                              color: colorlogo,
                               borderRadius: BorderRadius.circular(10)),
                           child: const Center(
                             child: CustomText(
-                              content: "only admins can send messages",
-                              colour: colorWhite,
+                              content: "Only Admins can send Messages",
+                              colour: kTextColor,
                             ),
                           ),
                         );
                       }
                     } else {
-                      return const Text("loading");
+                      return const Text("loading...");
                     }
                   }),
                 )
@@ -162,7 +159,10 @@ class GroupChatScreen extends StatelessWidget {
         return Align(
           alignment: Alignment.center,
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 13),
+            padding: EdgeInsets.symmetric(
+              vertical: getProportionateScreenHeight(2),
+              horizontal: getProportionateScreenWidth(13),
+            ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
                 color: colorSearchBarFilled),
@@ -184,15 +184,20 @@ class GroupChatScreen extends StatelessWidget {
 
   Widget messagePanel(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          color: colorWhite, borderRadius: BorderRadius.circular(10)),
-      margin: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      margin: EdgeInsets.only(
+        right: getProportionateScreenWidth(20),
+        left: getProportionateScreenWidth(20),
+        bottom: getProportionateScreenWidth(20),
+      ),
       child: Row(
         children: [
           SizedBox(
-              width: 260,
+              width: getProportionateScreenWidth(260),
               child: Padding(
-                padding: const EdgeInsets.only(left: 5),
+                padding: EdgeInsets.only(
+                  left: getProportionateScreenWidth(5),
+                ),
                 child: TextField(
                   controller: _messageController,
                   style: GoogleFonts.poppins(decoration: TextDecoration.none),
@@ -200,22 +205,23 @@ class GroupChatScreen extends StatelessWidget {
                 ),
               )),
           const Spacer(),
-          IconButton(
-              onPressed: () {
-                context.read<GchatBloc>().add(SendMessageEvent(
-                    groupId: groupData.groupId,
-                    message: _messageController.text));
-                _messageController.clear();
-                _scrollController.animateTo(
-                  0.0,
-                  curve: Curves.easeOut,
-                  duration: const Duration(milliseconds: 300),
-                );
-              },
-              icon: const Icon(
-                Icons.send,
-                color: colorlogo,
-              ))
+          TextButton(
+            onPressed: () {
+              context.read<GchatBloc>().add(SendMessageEvent(
+                  groupId: groupData.groupId,
+                  message: _messageController.text));
+              _messageController.clear();
+              _scrollController.animateTo(
+                0.0,
+                curve: Curves.easeOut,
+                duration: const Duration(milliseconds: 300),
+              );
+            },
+            child: const CustomText(
+              content: "Send",
+              size: 14,
+            ),
+          )
         ],
       ),
     );
@@ -227,7 +233,7 @@ InputDecoration textfieldDecoration() {
       disabledBorder: InputBorder.none,
       focusedBorder: InputBorder.none,
       enabledBorder: InputBorder.none,
-      hintText: "Type here ......",
+      hintText: "Message...",
       border: InputBorder.none,
       errorBorder: InputBorder.none);
 }

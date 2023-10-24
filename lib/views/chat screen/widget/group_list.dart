@@ -3,8 +3,10 @@ import 'package:message_wise/Controllers/group%20chat%20bloc/group_bloc.dart';
 import 'package:message_wise/Controllers/group%20functionality/group_functionality_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/search_field.dart';
-
 import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
 import '../../group chat screen/group_chat_screen.dart';
@@ -22,10 +24,11 @@ class GroupList extends StatelessWidget {
 
     return Column(
       children: [
+        sizeHeight15,
         SearchField(
           textEditingcontroller: _textEditingcontroller,
           onChanged: (value) async {},
-          hintText: "    search username or message",
+          hintText: "                  search user",
         ),
 //list view
         Expanded(
@@ -58,18 +61,18 @@ class GroupList extends StatelessWidget {
                           child: ListTile(
                             subtitle: Container(
                               constraints: const BoxConstraints(maxWidth: 170),
-                              width: 170,
-                              height: 13,
+                              width: getProportionateScreenWidth(170),
+                              height: getProportionateScreenHeight(13),
                               child: CustomText(
                                 content:
                                     "${state.groups[index].sendby} : ${state.groups[index].lastMsg ?? ""}",
-                                colour: colorWhite,
-                                size: 10,
+                                colour: kTextColor,
+                                size: getProportionateScreenHeight(10),
                               ),
                             ),
                             leading: CircleAvatar(
                               backgroundColor: colorWhite,
-                              radius: 20,
+                              radius: getProportionateScreenHeight(20),
                               backgroundImage: state.groups[index].photo == null
                                   ? const AssetImage(nullPhoto) as ImageProvider
                                   : NetworkImage(
@@ -80,7 +83,7 @@ class GroupList extends StatelessWidget {
 
                             title: CustomText(
                               content: state.groups[index].name,
-                              colour: colorWhite,
+                              colour: kTextColor,
                             ),
                           ),
                         ),
@@ -89,7 +92,7 @@ class GroupList extends StatelessWidget {
                     separatorBuilder: (context, index) => const Divider(),
                     itemCount: state.groups.length);
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return const CustomIndicator();
               }
             },
           ),

@@ -1,4 +1,6 @@
 import 'package:message_wise/Models/group_model.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/group%20info/widgets/group_settings.dart';
 import 'package:message_wise/views/home%20Screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,24 +20,23 @@ class GrpupInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: backroundColor,
       appBar: AppBar(
-        backgroundColor: backroundColor,
         title: const CustomText(
-          content: "Group info",
-          colour: colorWhite,
+          content: "Group Info",
+          colour: kTextColor,
         ),
       ),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenHeight(20)),
           child: Column(
             children: [
               SizedBox(
-                width: 200,
-                height: 200,
+                width: getProportionateScreenWidth(200),
+                height: getProportionateScreenHeight(200),
                 child: CircleAvatar(
                   backgroundImage: groupInfo.photo == null
                       ? const AssetImage(nullPhoto) as ImageProvider
@@ -45,7 +46,7 @@ class GrpupInfoScreen extends StatelessWidget {
               sizeHeight15,
               CustomText(
                 content: groupInfo.name,
-                colour: colorWhite,
+                colour: kTextColor,
               ),
               sizeHeight15,
               //membres
@@ -60,11 +61,11 @@ class GrpupInfoScreen extends StatelessWidget {
                       },
                       leading: const Icon(
                         Icons.group,
-                        color: colorWhite,
+                        color: kTextColor,
                       ),
                       title: const CustomText(
-                        content: "members",
-                        colour: colorWhite,
+                        content: "Members",
+                        colour: kTextColor,
                       ),
                     ),
                   )
@@ -94,20 +95,9 @@ class GrpupInfoScreen extends StatelessWidget {
 
               BlocConsumer<GroupFunctionalityBloc, GroupFunctionalityState>(
                 listener: (context, state) {
-                  if (state is ExitedGroup) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
-                        ),
-                        (route) => false);
-                  } else if (state is DismissState) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
-                        ),
-                        (route) => false);
+                  if (state is ExitedGroup || state is DismissState) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, HomeScreen.routeName, (route) => false);
                   }
                 },
                 builder: (context, state) {
@@ -134,7 +124,7 @@ class GrpupInfoScreen extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: 300,
+          width: getProportionateScreenWidth(300),
           child: ListTile(
             onTap: () {
               showDialog(
@@ -142,14 +132,14 @@ class GrpupInfoScreen extends StatelessWidget {
                 builder: (context) => AlertDialog(
                   // <-- SEE HERE
                   title: isExitGroup
-                      ? const Text('Exit group')
-                      : const Text('Dismiss group'),
+                      ? const Text('Exit Group')
+                      : const Text('Dismiss Group'),
                   content: SingleChildScrollView(
                     child: ListBody(
                       children: [
                         isExitGroup
-                            ? const Text('Are you sure want to exit group?')
-                            : const Text('Are you sure want to Dismiss group?'),
+                            ? const Text('Confirm Exit?')
+                            : const Text('Confirm Dismiss?'),
                       ],
                     ),
                   ),
@@ -184,7 +174,7 @@ class GrpupInfoScreen extends StatelessWidget {
               color: errorColor,
             ),
             title: CustomText(
-              content: isExitGroup ? "exit group" : "Dismiss Group",
+              content: isExitGroup ? "Exit Group" : "Dismiss Group",
               colour: errorColor,
             ),
           ),

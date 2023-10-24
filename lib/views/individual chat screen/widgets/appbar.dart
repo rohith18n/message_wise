@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:message_wise/constants.dart';
-
+import 'package:message_wise/size_config.dart';
 import '../../../Controllers/chat bloc/chat_bloc.dart';
 import '../../../Models/user_model.dart';
 import '../../../util.dart';
@@ -48,7 +48,7 @@ class AppBarForChat extends StatelessWidget {
                 if (state is OnlineState) {
                   return const CustomText(
                     content: "online",
-                    colour: colorWhite,
+                    colour: kTextColor,
                     size: 10,
                   );
                 } else {
@@ -65,11 +65,11 @@ class AppBarForChat extends StatelessWidget {
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 20),
+          padding: EdgeInsets.only(right: getProportionateScreenWidth(20)),
           child: Center(
               child: CircleAvatar(
             radius: 19,
-            backgroundImage: NetworkImage(bot.photo ?? "nnn"),
+            backgroundImage: NetworkImage(bot.photo ?? ""),
           )),
         )
       ],
