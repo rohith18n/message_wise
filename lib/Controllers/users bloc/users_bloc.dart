@@ -117,17 +117,17 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
           }
         }
         allUser = temp;
-        log(" list count${allUser.length}");
+        log("count of all users ${allUser.length}");
         add(ProvidUserListEvent(alluser: allUser));
       });
     });
     on<ProvidUserListEvent>((event, emit) {
-      log("enter ther provereven ${event.alluser.length}");
+      log("provided list of all the users ${event.alluser.length}");
       emit(OtherUsers(bots: event.alluser));
     });
     //send request
     on<SendRequestEvent>((event, emit) async {
-      log("send request");
+      log("send request event");
       await chatService
           .sendRequest(event.botId)
           .then((value) => emit(OtherUsers(bots: allUser)));

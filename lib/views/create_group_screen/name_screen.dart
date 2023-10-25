@@ -40,7 +40,7 @@ class NameScreen extends StatelessWidget {
             imagePath: imagePath.value),
       ),
       appBar: AppBar(
-        title: Text("Create Group", style: appBarHeadingStyle),
+        title: Text("Confirm Group", style: appBarHeadingStyle),
       ),
       body: Padding(
         padding:
@@ -48,10 +48,11 @@ class NameScreen extends StatelessWidget {
         child: Column(
           children: [
             Stack(
+              clipBehavior: Clip.none,
               children: [
                 SizedBox(
-                  width: getProportionateScreenWidth(200),
-                  height: getProportionateScreenHeight(200),
+                  width: getProportionateScreenWidth(150),
+                  height: getProportionateScreenHeight(150),
                   child: ValueListenableBuilder(
                     valueListenable: imagePath,
                     builder: (context, value, child) => CircleAvatar(

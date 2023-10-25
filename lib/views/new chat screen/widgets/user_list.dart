@@ -10,7 +10,6 @@ import '../../../Controllers/search bloc/search_bloc.dart';
 import '../../../Controllers/users bloc/users_bloc.dart';
 import '../../../Models/user_model.dart';
 import '../../../util.dart';
-
 import '../../individual chat screen/individual_chat_screen.dart';
 
 class UsersListInContact extends StatefulWidget {
@@ -83,7 +82,7 @@ class _UsersListInContactState extends State<UsersListInContact> {
                       }
                     },
                     child: CustomListTile(
-                      userName: result[index].username ?? "No Username",
+                      userName: result[index].username ?? "",
                       imageUrl:
                           result[index].photo ?? "assets/images/nullPhoto.jpeg",
                       trailingWidget: widget.iscontactScreen

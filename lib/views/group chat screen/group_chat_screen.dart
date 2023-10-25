@@ -61,6 +61,7 @@ class GroupChatScreen extends StatelessWidget {
                   child: BlocBuilder<GchatBloc, GchatState>(
                     builder: (BuildContext context, state) {
                       if (state is AllMessageState) {
+                        // ignore: unnecessary_null_comparison
                         return state.allmessages != null
                             ? ListView.builder(
                                 controller: _scrollController,
@@ -77,7 +78,7 @@ class GroupChatScreen extends StatelessWidget {
                                   String date = DateFormat.yMMMMEEEEd().format(
                                       DateTime.parse(
                                           state.allmessages[index].time));
-                                  log("$date kkk $previousDate");
+                                  log("$date date $previousDate");
                                   return previousDate != date
                                       ? dateDivider(state, index, currentUser)
                                       : GroupMessage(
@@ -217,9 +218,11 @@ class GroupChatScreen extends StatelessWidget {
                 duration: const Duration(milliseconds: 300),
               );
             },
-            child: const CustomText(
+            child: CustomText(
               content: "Send",
-              size: 14,
+              weight: FontWeight.bold,
+              colour: kPrimaryColor,
+              size: getProportionateScreenHeight(16),
             ),
           )
         ],

@@ -1,14 +1,11 @@
 import 'dart:developer';
-
 import 'package:message_wise/Models/user_model.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/user_list.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../Controllers/users bloc/users_bloc.dart';
 import '../../util.dart';
 
@@ -77,12 +74,13 @@ class ContactScreen extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenHeight(10)),
             //stream builder
             //listen users collecion firestore
             child:
                 BlocConsumer<UsersBloc, UsersState>(listener: (context, state) {
-              log(" here   ${state.toString()}");
+              log(" state is ${state.toString()}");
             }, builder: (context, state) {
               final List<UserModels> requestedUsers = [];
               if (state is OtherUsers) {

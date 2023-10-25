@@ -20,13 +20,13 @@ class AppBarForChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-          )),
+      // leading: IconButton(
+      //     onPressed: () {
+      //       Navigator.pop(context);
+      //     },
+      //     icon: const Icon(
+      //       Icons.arrow_back,
+      //     )),
       title: InkWell(
         onTap: () {
           Navigator.push(

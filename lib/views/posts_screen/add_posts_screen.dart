@@ -5,18 +5,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:message_wise/constants.dart';
 import 'package:message_wise/service/posts/posts_services.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
+import 'package:message_wise/views/common/widgets/custom_text.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
 
   @override
-  _AddPostScreenState createState() => _AddPostScreenState();
+  AddPostScreenState createState() => AddPostScreenState();
 }
 
-class _AddPostScreenState extends State<AddPostScreen> {
+class AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
@@ -26,34 +28,41 @@ class _AddPostScreenState extends State<AddPostScreen> {
       context: parentContext,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Create a Post'),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: const Center(child: CustomText(content: 'Create a Post')),
           children: <Widget>[
-            SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text('Take a photo'),
-                onPressed: () async {
-                  Navigator.pop(context);
-                  Uint8List file = await pickImage(ImageSource.camera);
-                  setState(() {
-                    _file = file;
-                  });
-                }),
-            SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text('Choose from Gallery'),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  Uint8List file = await pickImage(ImageSource.gallery);
-                  setState(() {
-                    _file = file;
-                  });
-                }),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text("Cancel"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const CustomText(content: 'Take a Photo'),
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      Uint8List file = await pickImage(ImageSource.camera);
+                      setState(() {
+                        _file = file;
+                      });
+                    }),
+                SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const CustomText(content: 'Choose from Gallery'),
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      Uint8List file = await pickImage(ImageSource.gallery);
+                      setState(() {
+                        _file = file;
+                      });
+                    }),
+                SimpleDialogOption(
+                  padding: const EdgeInsets.all(20),
+                  child: const CustomText(content: "Cancel"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             )
           ],
         );
@@ -118,12 +127,26 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Widget build(BuildContext context) {
     return _file == null
         ? Scaffold(
+            appBar: AppBar(
+              title: Padding(
+                padding: EdgeInsets.all(getProportionateScreenHeight(20)),
+              ),
+            ),
             body: Center(
-              child: IconButton(
-                icon: const Icon(
-                  Icons.upload,
-                ),
-                onPressed: () => _selectImage(context),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    iconSize: getProportionateScreenHeight(35),
+                    icon: const Icon(
+                      Icons.upload,
+                    ),
+                    onPressed: () => _selectImage(context),
+                  ),
+                  const CustomText(
+                    content: "Select Files to Upload",
+                  ),
+                ],
               ),
             ),
           )
@@ -133,10 +156,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: clearImage,
               ),
-              title: const Text(
-                'Post to',
+              title: Padding(
+                padding: EdgeInsets.all(getProportionateScreenHeight(20)),
+                child: Text(
+                  'Post To',
+                  style: appBarHeadingStyle,
+                ),
               ),
-              centerTitle: false,
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
@@ -164,7 +190,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
             body: Column(
               children: <Widget>[
                 isLoading
-                    ? const LinearProgressIndicator()
+                    ? const LinearProgressIndicator(
+                        color: kTextColor,
+                      )
                     : const Padding(padding: EdgeInsets.only(top: 0.0)),
                 const Divider(),
                 Row(
@@ -177,18 +205,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     //   ),
                     // ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.65,
                       child: TextField(
                         controller: _descriptionController,
                         decoration: const InputDecoration(
-                            hintText: "Write a description..",
-                            border: InputBorder.none),
-                        maxLines: 8,
+                            hintText: "Write..", border: InputBorder.none),
+                        maxLines: 2,
                       ),
                     ),
                     SizedBox(
-                      height: getProportionateScreenHeight(45.0),
-                      width: getProportionateScreenWidth(45.0),
+                      height: getProportionateScreenHeight(77.0),
+                      width: getProportionateScreenWidth(77.0),
                       child: AspectRatio(
                         aspectRatio: 487 / 451,
                         child: Container(

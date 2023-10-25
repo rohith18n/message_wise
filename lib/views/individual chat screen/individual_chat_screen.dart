@@ -1,10 +1,8 @@
 import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 import 'package:message_wise/Controllers/chat%20bloc/chat_bloc.dart';
 import 'package:message_wise/components/custom_circular_progress_indicator.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
-import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/individual%20chat%20screen/widgets/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -180,11 +178,11 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                           duration: const Duration(milliseconds: 300),
                         );
                       },
-                      child: const CustomText(
+                      child: CustomText(
                         content: "Send",
                         weight: FontWeight.bold,
                         colour: kPrimaryColor,
-                        size: 18,
+                        size: getProportionateScreenHeight(16),
                       ),
                     )
                   ],

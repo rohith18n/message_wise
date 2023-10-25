@@ -33,7 +33,7 @@ class _FeedScreenState extends State<FeedScreen> {
           Padding(
             padding: EdgeInsets.only(right: getProportionateScreenWidth(20)),
             child: IconButton(
-              icon: const Icon(CupertinoIcons.photo_camera_solid),
+              icon: const Icon(CupertinoIcons.camera_on_rectangle),
               onPressed: () {
                 Navigator.push(
                     context,
