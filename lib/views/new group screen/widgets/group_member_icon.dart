@@ -58,7 +58,7 @@ class GroupMembersIcon extends StatelessWidget {
                     }
                   },
                   icon: const Icon(
-                    Icons.close,
+                    Icons.remove_circle,
                     color: closeIconColor,
                     size: 15,
                   ))),

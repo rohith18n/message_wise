@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:message_wise/constants.dart';
-
+import 'package:message_wise/size_config.dart';
 import '../../../Models/group_model.dart';
 import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
@@ -12,7 +12,6 @@ class AppBarForGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
       leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -37,7 +36,7 @@ class AppBarForGroup extends StatelessWidget {
           padding: const EdgeInsets.only(right: 20),
           child: Center(
               child: CircleAvatar(
-            radius: 19,
+            radius: getProportionateScreenWidth(19),
             backgroundImage: groupData.photo == null
                 ? const AssetImage(nullPhoto) as ImageProvider
                 : NetworkImage(groupData.photo ?? ""),

@@ -40,51 +40,46 @@ class GroupList extends StatelessWidget {
                         decelerationRate: ScrollDecelerationRate.fast),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return BlocListener<GroupBloc, GroupState>(
-                        listener: (context, state) {
-                          if (state is GroupListState) {}
+                      return InkWell(
+                        onTap: () {
+                          context.read<GchatBloc>().add(FetchMessageEvent(
+                              groupId: state.groups[index].groupId));
+                          context.read<GroupFunctionalityBloc>().add(
+                              FetchMembersEvent(
+                                  groupId: state.groups[index].groupId));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => GroupChatScreen(
+                                        groupData: state.groups[index],
+                                      )));
                         },
-                        child: InkWell(
-                          onTap: () {
-                            context.read<GchatBloc>().add(FetchMessageEvent(
-                                groupId: state.groups[index].groupId));
-                            context.read<GroupFunctionalityBloc>().add(
-                                FetchMembersEvent(
-                                    groupId: state.groups[index].groupId));
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => GroupChatScreen(
-                                          groupData: state.groups[index],
-                                        )));
-                          },
-                          child: ListTile(
-                            subtitle: Container(
-                              constraints: const BoxConstraints(maxWidth: 170),
-                              width: getProportionateScreenWidth(170),
-                              height: getProportionateScreenHeight(13),
-                              child: CustomText(
-                                content:
-                                    "${state.groups[index].sendby} : ${state.groups[index].lastMsg ?? ""}",
-                                colour: kTextColor,
-                                size: getProportionateScreenHeight(10),
-                              ),
-                            ),
-                            leading: CircleAvatar(
-                              backgroundColor: colorWhite,
-                              radius: getProportionateScreenHeight(20),
-                              backgroundImage: state.groups[index].photo == null
-                                  ? const AssetImage(nullPhoto) as ImageProvider
-                                  : NetworkImage(
-                                      state.groups[index].photo ?? ""),
-                            ),
-
-                            ///connection button
-
-                            title: CustomText(
-                              content: state.groups[index].name,
+                        child: ListTile(
+                          subtitle: Container(
+                            constraints: BoxConstraints(
+                                maxWidth: getProportionateScreenWidth(170)),
+                            width: getProportionateScreenWidth(170),
+                            height: getProportionateScreenHeight(13),
+                            child: CustomText(
+                              content:
+                                  "${state.groups[index].sendby} : ${state.groups[index].lastMsg ?? ""}",
                               colour: kTextColor,
+                              size: getProportionateScreenHeight(10),
                             ),
+                          ),
+                          leading: CircleAvatar(
+                            backgroundColor: colorWhite,
+                            radius: getProportionateScreenHeight(20),
+                            backgroundImage: state.groups[index].photo == null
+                                ? const AssetImage(nullPhoto) as ImageProvider
+                                : NetworkImage(state.groups[index].photo ?? ""),
+                          ),
+
+                          ///connection button
+
+                          title: CustomText(
+                            content: state.groups[index].name,
+                            colour: kTextColor,
                           ),
                         ),
                       );

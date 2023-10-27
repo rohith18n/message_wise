@@ -64,7 +64,7 @@ class UsernameScreen extends StatelessWidget {
                   ),
                   sizeHeight15,
                   SizedBox(
-                    width: 300,
+                    width: getProportionateScreenWidth(300),
                     child: DefaultButton(
                       press: () {
                         if (userNameController.text.isNotEmpty) {

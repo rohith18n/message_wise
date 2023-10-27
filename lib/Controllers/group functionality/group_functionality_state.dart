@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'group_functionality_bloc.dart';
 
 abstract class GroupFunctionalityState extends Equatable {
@@ -11,7 +13,6 @@ class MembersLoadedState extends GroupFunctionalityState {
   List<GroupMember>? members;
   GroupMember? currentUser;
   @override
-  // TODO: implement props
   List<Object?> get props => [isloading, members, currentUser];
   MembersLoadedState(
       {required this.isloading,

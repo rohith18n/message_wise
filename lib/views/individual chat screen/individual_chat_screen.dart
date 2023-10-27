@@ -60,7 +60,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      log("resumed");
+      log("state is resumed");
       await FirebaseFirestore.instance
           .collection('chatroom')
           .doc(widget.roomID)
@@ -70,15 +70,15 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           .collection('chatroom')
           .doc(widget.roomID)
           .update({FirebaseAuth.instance.currentUser!.uid: false});
-      log("paused");
+      log("state is paused");
     } else if (state == AppLifecycleState.inactive) {
       FirebaseFirestore.instance
           .collection('chatroom')
           .doc(widget.roomID)
           .update({FirebaseAuth.instance.currentUser!.uid: false});
-      log("inactive");
+      log("state is inactive");
     } else if (state == AppLifecycleState.detached) {
-      log("detached");
+      log("state is detached");
     } else {
       log(state.toString());
     }

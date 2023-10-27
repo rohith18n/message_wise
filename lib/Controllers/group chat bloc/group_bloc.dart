@@ -27,14 +27,13 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
       emit(SuccessState());
     });
     // fetch group event
-    //===================================================================================================================
+
     on<FetchGroupsEvent>((event, emit) async {
       log("FetchGroupsEvent");
       // emit loading state
       emit(LoadingState());
-
-      ///listen current users groups
-      ///if added in any group it update ui part
+      //listen current users groups
+      //if added in any group it update the ui part
       final groupChat =
           FirebaseFirestore.instance.collection("groupChat").snapshots();
 
@@ -69,10 +68,10 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         }
         //emit groups
         add(ProvideGroupsEvent());
-        log("provedentEvent");
+        log("added provideGroups Event");
       });
     });
-    //==========================================================================================================================
+
     on<ProvideGroupsEvent>(
         (event, emit) => emit(GroupListState(groups: groups)));
     //inital event

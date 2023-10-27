@@ -20,7 +20,7 @@ class GchatBloc extends Bloc<GchatEvent, GchatState> {
     String? currentuserName;
     String? currentuserImage;
 
-    //onsend msg ========================================================================================================
+    //onsend message
     on<SendMessageEvent>((event, emit) async {
       groupChatService.sendMessage(
           userName: currentuserName!,
@@ -30,17 +30,17 @@ class GchatBloc extends Bloc<GchatEvent, GchatState> {
           image: currentuserImage);
     });
 
-    ///fetch message when open chat screeen
+    //fetch message event ontaping groupchat list tile
     on<FetchMessageEvent>((event, emit) async {
       emit(LoadingState());
       await FirebaseAuth.instance.currentUser!.reload();
-      final userName = await FirebaseFirestore.instance
+      final currentUserr = await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
-      currentuserName = userName.data()!["userName"];
-      currentuserImage = userName.data()!["photo"];
-      log("");
+      currentuserName = currentUserr.data()!["userName"];
+      currentuserImage = currentUserr.data()!["photo"];
+      log("$currentuserName");
       final members = FirebaseFirestore.instance
           .collection("groupChat")
           .doc(event.groupId)
@@ -57,9 +57,9 @@ class GchatBloc extends Bloc<GchatEvent, GchatState> {
       CombineLatestStream.list([members, messages]).listen((value) async {
         List<GroupMsgModel> allmessages = [];
         GroupMember? currentUserData;
-//current user data
-        //for showing gorup members list
-        //==================================================
+        //current user data
+        //for showing the list of members in the group
+
         for (var element in value[0].docs) {
           if (element.data()["botId"] ==
               FirebaseAuth.instance.currentUser!.uid) {
@@ -77,7 +77,7 @@ class GchatBloc extends Bloc<GchatEvent, GchatState> {
             }
           }
         }
-        //===============================================
+
         for (var msg in value[1].docs) {
           final time = (msg.data()["time"] as Timestamp).toDate().toString();
 
@@ -88,7 +88,7 @@ class GchatBloc extends Bloc<GchatEvent, GchatState> {
               time: time,
               sendby: msg.data()["sendby"]));
         }
-        log("mesage length ${allmessages.length} member${members.length}");
+        log("allmessages length ${allmessages.length} , members length ${members.length}");
 
         add(ProvideDataToGroupEvent(
             allmessages: allmessages, currentUser: currentUserData));

@@ -62,7 +62,7 @@ class _UsersListInContactState extends State<UsersListInContact> {
                       previous != current || previous == current,
                   listener: (context, state) {
                     if (state is ChatFirstState) {
-                      log("entering to chat");
+                      log("entering into chat");
                       Navigator.push(
                           context,
                           MaterialPageRoute(

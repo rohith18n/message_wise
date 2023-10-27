@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -33,7 +32,7 @@ class ChatService {
           .collection("sendRequest")
           .doc(botID)
           .set({"userId": botID, "time": FieldValue.serverTimestamp()});
-      log("send req done");
+      log("currentuser-sendrequest collection & reciever-request collection updated");
     }
   }
 
@@ -41,18 +40,18 @@ class ChatService {
     final String currentUser = FirebaseAuth.instance.currentUser!.uid;
     if (botUid.codeUnits[0] > currentUser.codeUnits[0]) {
       String roomId = "$botUid$currentUser";
-      log(" trur  $botUid and $currentUser");
+      log(" roomID  $botUid and $currentUser");
       return roomId;
     } else {
       String roomId = "$currentUser$botUid";
-      log(" flas  $currentUser and $botUid");
+      log(" roomID  $currentUser and $botUid");
       return roomId;
     }
   }
 
   Future onMessaging({required String message, required String roomID}) async {
     final String currentUser = FirebaseAuth.instance.currentUser!.uid;
-    log(" on message log roomID $roomID");
+    log(" onMessaging function roomID is  $roomID");
     Map<String, dynamic> messages = {
       "message": message,
       "sendby": currentUser,
@@ -120,7 +119,7 @@ class ChatService {
         .collection("sendRequest")
         .doc(currentUser)
         .delete();
-    log("connection done");
+    log("connection collection updated");
   }
 
   //remove request
@@ -140,7 +139,7 @@ class ChatService {
         .collection("request")
         .doc(currentUser)
         .delete();
-    log("function remove request done");
+    log("request cancelled");
   }
 
   //decline req
@@ -160,7 +159,7 @@ class ChatService {
         .collection("sendRequest")
         .doc(currentUser)
         .delete();
-    log("function remove request done");
+    log("request declined");
   }
 
   Future unReadCount() async {
@@ -179,6 +178,7 @@ class ChatService {
           .doc(roomId)
           .collection("chats")
           .get();
+      // ignore: unused_local_variable
       for (var element in messages.docs) {}
     }
   }

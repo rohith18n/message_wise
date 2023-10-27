@@ -89,7 +89,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
           builder: (context, state) {
             if (!widget.isAddMemberScreen) {
               return Text(
-                "New Group",
+                "Create Group",
                 style: appBarHeadingStyle,
               );
             } else if (state is ProvideUserListState) {

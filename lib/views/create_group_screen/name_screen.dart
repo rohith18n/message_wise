@@ -2,11 +2,11 @@
 
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:message_wise/Controllers/group%20chat%20bloc/group_bloc.dart';
 import 'package:message_wise/Models/select_model.dart';
 import 'package:message_wise/components/custom_circular_progress_indicator.dart';
+import 'package:message_wise/components/custom_surfix_icon.dart';
 import 'package:message_wise/service/profile%20service/profile_service.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/injectable.dart';
@@ -19,7 +19,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../util.dart';
 import '../common/widgets/custom_text.dart';
-import '../common/widgets/textformcommon_style.dart';
 
 final textController = TextEditingController();
 
@@ -87,32 +86,29 @@ class NameScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Positioned.fill(
-                //     child: IconButton(
-                //         onPressed: () async {
-                //           imagePath.value =
-                //               await getIt<ProfileService>().selectImage();
-                //         },
-                //         icon: const Icon(
-                //           CupertinoIcons.camera,
-                //           size: 20,
-                //         ))),
               ],
             ),
             sizeHeight15,
-            SizedBox(
-              width: getProportionateScreenWidth(200),
-              height: getProportionateScreenHeight(40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
               child: TextField(
                 controller: textController,
-                style: GoogleFonts.poppins(color: kTextColor),
-                decoration: textFormFieldStyle("Group Name"),
+                style: GoogleFonts.poppins(color: colorblack),
+                decoration: const InputDecoration(
+                  labelText: "Group Name",
+                  hintText: "Group Name",
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  suffixIcon: CustomSurffixIcon(
+                      svgIcon: "assets/icons/Conversation.svg"),
+                ),
               ),
             ),
             sizeHeight15,
-            const CustomText(
+            CustomText(
               content: "Participants",
-              colour: kTextColor,
+              colour: colorblack,
+              weight: FontWeight.bold,
+              size: getProportionateScreenHeight(14),
             ),
             sizeHeight15,
             Expanded(
@@ -153,7 +149,6 @@ class _FloatingButtonState extends State<FloatingButton> {
   @override
   void dispose() {
     log("disposed");
-
     textController.clear();
     super.dispose();
   }
@@ -189,7 +184,7 @@ class _FloatingButtonState extends State<FloatingButton> {
               return const CustomIndicator();
             } else {
               return const Icon(
-                Icons.check,
+                Icons.arrow_circle_right_outlined,
                 color: colorMessageClientTextWhite,
               );
             }

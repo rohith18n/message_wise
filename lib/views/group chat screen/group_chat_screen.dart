@@ -116,7 +116,8 @@ class GroupChatScreen extends StatelessWidget {
                             bottom: getProportionateScreenWidth(20),
                           ),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
+                              color: Colors.orange.shade50,
+                              borderRadius: BorderRadius.circular(20)),
                           child: const Center(
                             child: CustomText(
                               content: "Only Admins can send Messages",
@@ -185,7 +186,9 @@ class GroupChatScreen extends StatelessWidget {
 
   Widget messagePanel(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.orange.shade50),
       margin: EdgeInsets.only(
         right: getProportionateScreenWidth(20),
         left: getProportionateScreenWidth(20),
