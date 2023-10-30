@@ -70,26 +70,26 @@ class GroupFunctionalityBloc
         members: event.members,
         currentUser: event.currentUser)));
 
-// add members      ===============================================================================================
+    //add members events
     on<AddMembersEvent>((event, emit) async {
       emit(ProvideUserListState(isLoading: true));
       List<SelectModel> listOfusers = [];
-      // geting all group members
+      // getting all group members
       final groupMembers = await firestore
           .collection("groupChat")
           .doc(event.groupId)
           .collection("members")
           .get();
 
-//getting all connection
+      //getting all connections
       final connections = await firestore
           .collection("users")
           .doc(firebaseAuth.currentUser!.uid)
           .collection("connections")
           .get();
 
-      /// checking connected members allready in groups
-      /// if user not in a list provide to add screen
+      // checking whether connected members are allready in groups or not
+      // if user not in a list provide to add screen
       for (var connection in connections.docs) {
         int flag = 0;
         for (var members in groupMembers.docs) {

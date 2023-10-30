@@ -191,7 +191,8 @@ class AddPostScreenState extends State<AddPostScreen> {
               children: <Widget>[
                 isLoading
                     ? const LinearProgressIndicator(
-                        color: kTextColor,
+                        color: colorWhite,
+                        backgroundColor: kPrimaryColor,
                       )
                     : const Padding(padding: EdgeInsets.only(top: 0.0)),
                 const Divider(),

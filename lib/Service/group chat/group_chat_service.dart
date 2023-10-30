@@ -88,7 +88,7 @@ class GroupChatService {
     log(" create group commit done");
   }
 
-  //send messages=======================================================================
+  //send messages
   Future sendMessage(
       {required String message,
       required String groupId,

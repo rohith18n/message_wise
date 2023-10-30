@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
+import 'package:message_wise/util.dart';
 import 'package:message_wise/views/chat%20screen/chat_screen.dart';
 import 'package:message_wise/views/new%20chat%20screen/contacts_screen.dart';
 import 'package:message_wise/views/posts_screen/feed_screen.dart';
@@ -34,6 +35,8 @@ class HomeScreen extends StatelessWidget {
           builder: (context, index, child) => screens[index],
         ),
         bottomNavigationBar: GNav(
+          gap: getProportionateScreenHeight(10),
+          backgroundColor: colorWhite,
           selectedIndex: _index.value,
           iconSize: getProportionateScreenHeight(27),
           activeColor: kPrimaryColor,
