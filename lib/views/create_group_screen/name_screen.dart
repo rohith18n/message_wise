@@ -184,7 +184,7 @@ class _FloatingButtonState extends State<FloatingButton> {
               return const CustomIndicator();
             } else {
               return const Icon(
-                Icons.arrow_circle_right_outlined,
+                Icons.arrow_forward_ios,
                 color: colorMessageClientTextWhite,
               );
             }

@@ -116,7 +116,7 @@ class GroupFunctionalityBloc
       emit(ProvideUserListState(isLoading: false, user: listOfusers));
     });
     on<AddMembersToDbEvent>((event, emit) async {
-      log("add membrs event");
+      log("add members event");
       List<String> users = event.selectedBots.map((e) => e.bot.uid).toList();
       await groupServices.addMember(
           members: users, groupId: event.groupId, gName: event.gName);

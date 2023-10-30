@@ -53,7 +53,7 @@ class GrpupInfoScreen extends StatelessWidget {
               Row(
                 children: [
                   SizedBox(
-                    width: 300,
+                    width: getProportionateScreenWidth(300),
                     child: ListTile(
                       onTap: () async {
                         await showMembers(
@@ -130,7 +130,10 @@ class GrpupInfoScreen extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  // <-- SEE HERE
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(getProportionateScreenHeight(10)),
+                  ),
                   title: isExitGroup
                       ? const Text('Exit Group')
                       : const Text('Dismiss Group'),

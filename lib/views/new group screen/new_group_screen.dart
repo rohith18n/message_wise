@@ -38,7 +38,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   final _textEditingController = TextEditingController();
   @override
   void initState() {
-    log("init state is working");
+    log("initstate is working");
     if (widget.isAddMemberScreen) {
       if (widget.groupId != null) {
         context
@@ -135,7 +135,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
                 searchresult = bots.value
                     .where((element) => element.bot.username!.contains(value))
                     .toList();
-                log("length   ${searchresult.length}");
+                log("numbers of users are  ${searchresult.length}");
               });
             },
             hintText: "          Search your friends",
@@ -182,7 +182,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
                           : null,
                       leading: CircleAvatar(
                         backgroundColor: colorWhite,
-                        radius: 20,
+                        radius: getProportionateScreenHeight(20),
                         backgroundImage: NetworkImage(
                             searchresult[index].bot.photo ??
                                 "assets/images/nullPhoto.jpeg"),

@@ -4,7 +4,6 @@ import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import '../../../Controllers/chat bloc/chat_bloc.dart';
 import '../../../Models/user_model.dart';
-import '../../../util.dart';
 import '../../common/widgets/custom_text.dart';
 import '../../profile screen/profile_screen.dart';
 
@@ -20,13 +19,13 @@ class AppBarForChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      // leading: IconButton(
-      //     onPressed: () {
-      //       Navigator.pop(context);
-      //     },
-      //     icon: const Icon(
-      //       Icons.arrow_back,
-      //     )),
+      leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+          )),
       title: InkWell(
         onTap: () {
           Navigator.push(

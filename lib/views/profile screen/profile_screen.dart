@@ -1,5 +1,6 @@
 import 'package:message_wise/Models/user_model.dart';
 import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
 import 'package:flutter/material.dart';
 import '../common/widgets/custom_text.dart';
@@ -69,11 +70,10 @@ class ProfileScreen extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    sizeWidth20,
-                    const CustomText(
-                      content: "info : ",
-                      colour: kTextColor,
-                      size: 15,
+                    CustomText(
+                      content: "Information :",
+                      colour: Colors.black,
+                      size: getProportionateScreenHeight(15),
                     ),
                     CustomText(
                       content: user.email,
@@ -86,51 +86,19 @@ class ProfileScreen extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    sizeWidth20,
-                    const CustomText(
-                      content: "username : ",
-                      colour: kTextColor,
-                      size: 15,
+                    CustomText(
+                      content: "UserName : ",
+                      colour: Colors.black,
+                      size: getProportionateScreenHeight(15),
                     ),
                     CustomText(
                       content: user.username ?? "",
                       colour: kTextColor,
-                      size: 15,
+                      size: getProportionateScreenHeight(15),
                     ),
                   ],
                 ),
                 const Divider(),
-                Row(
-                  children: [
-                    sizeWidth20,
-                    const CustomText(
-                      content: "clear chat",
-                      colour: errorColor,
-                    ),
-                  ],
-                ),
-                sizeHeight15,
-                Row(
-                  children: [
-                    sizeWidth20,
-                    const CustomText(
-                      content: "block",
-                      colour: errorColor,
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    sizeWidth20,
-                    const CustomText(
-                      content: "group in common",
-                      colour: kTextColor,
-                      size: 15,
-                    ),
-                  ],
-                ),
               ]),
         ),
       ),

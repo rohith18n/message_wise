@@ -6,13 +6,11 @@ import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/chat%20screen/widget/custom_tab_bar.dart';
 import 'package:message_wise/views/chat%20screen/widget/group_list.dart';
-import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/new%20chat%20screen/widgets/user_list.dart';
 import 'package:message_wise/views/new%20group%20screen/new_group_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:message_wise/views/posts_screen/add_posts_screen.dart';
 import '../../util.dart';
 
 class ChatScreen extends StatelessWidget {
