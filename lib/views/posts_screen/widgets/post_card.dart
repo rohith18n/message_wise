@@ -10,6 +10,7 @@ import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
+import 'package:message_wise/views/posts_screen/widgets/comment_screen.dart';
 import 'package:message_wise/views/posts_screen/widgets/like_animation.dart';
 
 class PostCard extends StatefulWidget {
@@ -220,15 +221,25 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                 ),
-                DefaultTextStyle(
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(fontWeight: FontWeight.w800),
-                    child: Text(
-                      '${widget.snap['likes'].length} likes',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )),
+                IconButton(
+                  icon: const Icon(
+                    CupertinoIcons.bubble_left,
+                  ),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => CommentsScreen(
+                        postId: widget.snap['postId'].toString(),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                    child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                      icon: const Icon(Icons.bookmark_border),
+                      onPressed: () {}),
+                ))
               ],
             ),
             //DESCRIPTION AND NUMBER OF COMMENTS
@@ -238,6 +249,15 @@ class _PostCardState extends State<PostCard> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  DefaultTextStyle(
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall!
+                          .copyWith(fontWeight: FontWeight.w800),
+                      child: Text(
+                        '${widget.snap['likes'].length} likes',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )),
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.only(
@@ -260,9 +280,27 @@ class _PostCardState extends State<PostCard> {
                       ),
                     ),
                   ),
+                  InkWell(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        'View all $commentLen comments',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: kTextColor,
+                        ),
+                      ),
+                    ),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CommentsScreen(
+                          postId: widget.snap['postId'].toString(),
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: getProportionateScreenHeight(4)),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
                       DateFormat.yMMMd()
                           .format(widget.snap['datePublished'].toDate()),

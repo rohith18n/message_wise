@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:message_wise/constants.dart';
 
 class CommentCard extends StatelessWidget {
   final snap;
@@ -30,11 +31,14 @@ class CommentCard extends StatelessWidget {
                         TextSpan(
                             text: snap.data()['name'],
                             style: const TextStyle(
+                              color: kTextColor,
                               fontWeight: FontWeight.bold,
                             )),
                         TextSpan(
-                          text: ' ${snap.data()['text']}',
-                        ),
+                            text: ' ${snap.data()['text']}',
+                            style: const TextStyle(
+                              color: kTextColor,
+                            )),
                       ],
                     ),
                   ),

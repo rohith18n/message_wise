@@ -12,16 +12,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:message_wise/views/status_screen/see_statuses.dart';
 import '../../Controllers/profile/profile_bloc_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
   HomeScreen({super.key});
   final List screens = [
-    // const CallScreen(),
     const FeedScreen(),
     ChatScreen(),
     ContactScreen(),
+    const SeeStatus(),
     SettingsScreen(),
   ];
   final ValueNotifier<int> _index = ValueNotifier(1);
@@ -34,34 +35,41 @@ class HomeScreen extends StatelessWidget {
           valueListenable: _index,
           builder: (context, index, child) => screens[index],
         ),
-        bottomNavigationBar: GNav(
-          gap: getProportionateScreenHeight(10),
-          backgroundColor: colorWhite,
-          selectedIndex: _index.value,
-          iconSize: getProportionateScreenHeight(27),
-          activeColor: kPrimaryColor,
-          color: kTextColor,
-          onTabChange: (value) {
-            _index.value = value;
-          },
-          tabs: const [
-            GButton(
-              icon: CupertinoIcons.camera,
-              text: 'Feeds',
-            ),
-            GButton(
-              icon: CupertinoIcons.chat_bubble_2,
-              text: 'Chats',
-            ),
-            GButton(
-              icon: CupertinoIcons.person_2,
-              text: 'All Users',
-            ),
-            GButton(
-              icon: CupertinoIcons.settings,
-              text: 'Settings',
-            )
-          ],
+        bottomNavigationBar: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: GNav(
+            gap: getProportionateScreenHeight(10),
+            backgroundColor: colorWhite,
+            selectedIndex: _index.value,
+            iconSize: getProportionateScreenHeight(27),
+            activeColor: kPrimaryColor,
+            color: kTextColor,
+            onTabChange: (value) {
+              _index.value = value;
+            },
+            tabs: const [
+              GButton(
+                icon: CupertinoIcons.camera,
+                text: 'Feeds',
+              ),
+              GButton(
+                icon: CupertinoIcons.chat_bubble_2,
+                text: 'Chats',
+              ),
+              GButton(
+                icon: CupertinoIcons.person_2,
+                text: 'All Users',
+              ),
+              GButton(
+                icon: Icons.add_reaction_outlined,
+                text: 'Status',
+              ),
+              GButton(
+                icon: CupertinoIcons.settings,
+                text: 'Settings',
+              )
+            ],
+          ),
         ));
   }
 }
