@@ -33,40 +33,34 @@ class HomeScreen extends StatelessWidget {
           valueListenable: _index,
           builder: (context, index, child) => screens[index],
         ),
-        bottomNavigationBar: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: GNav(
-              gap: getProportionateScreenHeight(10),
-              backgroundColor: colorWhite,
-              selectedIndex: _index.value,
-              iconSize: getProportionateScreenHeight(27),
-              activeColor: kPrimaryColor,
-              color: kTextColor,
-              onTabChange: (value) {
-                _index.value = value;
-              },
-              tabs: const [
-                GButton(
-                  icon: CupertinoIcons.camera,
-                  text: 'Feeds',
-                ),
-                GButton(
-                  icon: CupertinoIcons.chat_bubble_2,
-                  text: 'Chats',
-                ),
-                GButton(
-                  icon: CupertinoIcons.person_2,
-                  text: 'All Users',
-                ),
-                GButton(
-                  icon: CupertinoIcons.settings,
-                  text: 'Settings',
-                )
-              ],
+        bottomNavigationBar: GNav(
+          gap: getProportionateScreenHeight(10),
+          backgroundColor: colorWhite,
+          selectedIndex: _index.value,
+          iconSize: getProportionateScreenHeight(27),
+          activeColor: kPrimaryColor,
+          color: kTextColor,
+          onTabChange: (value) {
+            _index.value = value;
+          },
+          tabs: const [
+            GButton(
+              icon: CupertinoIcons.camera,
+              text: 'Feeds',
             ),
-          ),
+            GButton(
+              icon: CupertinoIcons.chat_bubble_2,
+              text: 'Chats',
+            ),
+            GButton(
+              icon: CupertinoIcons.person_2,
+              text: 'All Users',
+            ),
+            GButton(
+              icon: CupertinoIcons.settings,
+              text: 'Settings',
+            )
+          ],
         ));
   }
 }

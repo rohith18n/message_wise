@@ -1,25 +1,23 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, no_logic_in_create_state
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:message_wise/Service/status/status_services.dart';
+import 'package:message_wise/constants.dart';
+import 'package:message_wise/size_config.dart';
 import 'dart:async';
-import 'package:message_wise/components/custom_circular_progress_indicator.dart';
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 
 class StatusViewPage extends StatefulWidget {
-  final String statusId;
-  final Map<String, dynamic> statusMap;
+  final List<Map<String, dynamic>> statuses;
 
-  const StatusViewPage({
-    super.key,
-    required this.statusId,
-    required this.statusMap,
-  });
+  const StatusViewPage({Key? key, required this.statuses}) : super(key: key);
 
   @override
-  StatusViewPageState createState() => StatusViewPageState();
+  StatusViewPageState createState() => StatusViewPageState(statuses);
 }
 
 class StatusViewPageState extends State<StatusViewPage> {
@@ -27,15 +25,12 @@ class StatusViewPageState extends State<StatusViewPage> {
   int _currentPageIndex = 0;
   List<Map<String, dynamic>> statusData = [];
 
-  @override
-  void initState() {
-    super.initState();
-    fetchStatusData();
+  StatusViewPageState(List<Map<String, dynamic>> statuses) {
+    statusData = statuses;
+    startAutoSwitchTimer();
   }
 
-  void fetchStatusData() async {
-    // Use the provided statusMap to populate the statusData list.
-    statusData.add(widget.statusMap);
+  void startAutoSwitchTimer() {
     // Start a timer to automatically switch images every 30 seconds
     Timer.periodic(const Duration(seconds: 30), (timer) {
       if (_currentPageIndex < statusData.length - 1) {
@@ -60,80 +55,112 @@ class StatusViewPageState extends State<StatusViewPage> {
     super.dispose();
   }
 
-  deleteStatus(String statusId) async {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: statusData.isNotEmpty
+          ? PageView.builder(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPageIndex = index;
+                });
+              },
+              itemCount: statusData.length,
+              itemBuilder: (context, index) {
+                final user = statusData[index]['user'] as Map<String, dynamic>;
+                final statusUrl = user['statusUrl'] as String?;
+                final description = user['description'] as String?;
+                final profileImage = user['profImage'] as String?;
+                final username = user['username'] as String?;
+                final datePublished = user['datePublished'] as Timestamp;
+
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        // Profile picture
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(profileImage ?? ''),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Username
+                              CustomText(
+                                content: username ?? '',
+                                size: 18,
+                                weight: FontWeight.bold,
+                              ),
+                              // Uploaded time
+                              CustomText(
+                                content: DateFormat('EEE, hh:mm a z')
+                                    .format(datePublished.toDate()),
+                                size: 14,
+                                colour: kTextColor,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(CupertinoIcons.delete),
+                          onPressed: () {
+                            // Delete the current image
+                            deleteStatus(
+                                statusData[_currentPageIndex]['userId']);
+                            if (statusData.isNotEmpty) {
+                              if (_currentPageIndex >= statusData.length) {
+                                // If the deleted image was the last, navigate to the previous image
+                                _currentPageIndex = statusData.length - 1;
+                              }
+                              _pageController.jumpToPage(_currentPageIndex);
+                            } else {
+                              // Handle when there are no more images
+                              // You may want to navigate back to the previous screen or show a message
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Image.network(
+                        statusUrl ?? '',
+                        fit: BoxFit.fitWidth,
+                        width: double.infinity,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          bottom: getProportionateScreenHeight(30)),
+                      child: CustomText(
+                        content: description ?? '',
+                        size: 18,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            )
+          : const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  deleteStatus(String statId) async {
     try {
-      await FireStoreStatusMethods().deleteStatus(statusId);
+      await FireStoreStatusMethods().deleteStatus(statId);
+      // You can add any additional logic you need here after deleting the status.
     } catch (err) {
       showSnackBar(
         context,
         err.toString(),
       );
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Status Viewer'),
-      ),
-      body: statusData.isNotEmpty
-          ? Stack(
-              children: [
-                PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentPageIndex = index;
-                    });
-                  },
-                  itemCount: statusData.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: Image.network(
-                            statusData[index]['statusUrl'],
-                            fit: BoxFit.fitWidth,
-                            width: double.infinity,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CustomText(
-                              content: statusData[index]['description']),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                Positioned(
-                  top: 16,
-                  right: 16,
-                  child: IconButton(
-                    icon: const Icon(CupertinoIcons.delete),
-                    onPressed: () {
-                      // Delete the current image
-                      deleteStatus(widget.statusId);
-
-                      Navigator.of(context).pop();
-
-                      if (statusData.isNotEmpty) {
-                        if (_currentPageIndex >= statusData.length) {
-                          // If the deleted image was the last, navigate to the previous image
-                          _currentPageIndex = statusData.length - 1;
-                        }
-                        _pageController.jumpToPage(_currentPageIndex);
-                      } else {
-                        // Handle when there are no more images
-                        // You may want to navigate back to the previous screen or show a message
-                      }
-                    },
-                  ),
-                ),
-              ],
-            )
-          : const CustomIndicator(),
-    );
   }
 }
