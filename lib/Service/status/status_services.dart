@@ -32,8 +32,6 @@ class FireStoreStatusMethods {
 
       await _firestore.collection('status').doc(statusId).set(status.toJson());
 
-      // Set up a Firestore rule to allow status deletion based on the `deletionTimestamp` field.
-
       res = "success";
     } catch (err) {
       res = err.toString();
@@ -42,7 +40,7 @@ class FireStoreStatusMethods {
   }
 
   // Delete status
-  Future<String> deletestatus(String statusId) async {
+  Future<String> deleteStatus(String statusId) async {
     String res = "Some error has occurred";
     try {
       await _firestore.collection('status').doc(statusId).delete();

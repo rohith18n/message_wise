@@ -8,6 +8,7 @@ import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/posts_screen/add_posts_screen.dart';
 import 'package:message_wise/views/posts_screen/widgets/post_card.dart';
+import 'package:message_wise/views/status_screen/see_statuses.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -45,17 +46,27 @@ class _FeedScreenState extends State<FeedScreen> {
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('datePublished', descending: true)
+            .snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CustomIndicator();
           }
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (ctx, index) => PostCard(
-              snap: snapshot.data!.docs[index].data(),
-            ),
+          return Column(
+            children: [
+              const SeeStatus(),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (ctx, index) => PostCard(
+                    snap: snapshot.data!.docs[index].data(),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
