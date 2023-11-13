@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, no_logic_in_create_state
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -57,6 +58,9 @@ class StatusViewPageState extends State<StatusViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the current user's UID
+    final currentUserUid = FirebaseAuth.instance.currentUser?.uid;
+
     return Scaffold(
       appBar: AppBar(),
       body: statusData.isNotEmpty
@@ -75,6 +79,9 @@ class StatusViewPageState extends State<StatusViewPage> {
                 final profileImage = user['profImage'] as String?;
                 final username = user['username'] as String?;
                 final datePublished = user['datePublished'] as Timestamp;
+
+                // Check if the current user is the owner of the status
+                final isCurrentUserStatus = currentUserUid == user['uid'];
 
                 return Column(
                   children: [
@@ -109,24 +116,26 @@ class StatusViewPageState extends State<StatusViewPage> {
                           ),
                         ),
                         const Spacer(),
-                        IconButton(
-                          icon: const Icon(CupertinoIcons.delete),
-                          onPressed: () {
-                            // Delete the current image
-                            deleteStatus(
-                                statusData[_currentPageIndex]['userId']);
-                            if (statusData.isNotEmpty) {
-                              if (_currentPageIndex >= statusData.length) {
-                                // If the deleted image was the last, navigate to the previous image
-                                _currentPageIndex = statusData.length - 1;
+                        // Show the delete button only if the current user is the owner of the status
+                        if (isCurrentUserStatus)
+                          IconButton(
+                            icon: const Icon(CupertinoIcons.delete),
+                            onPressed: () {
+                              // Delete the current image
+                              deleteStatus(
+                                  statusData[_currentPageIndex]['userId']);
+                              if (statusData.isNotEmpty) {
+                                if (_currentPageIndex >= statusData.length) {
+                                  // If the deleted image was the last, navigate to the previous image
+                                  _currentPageIndex = statusData.length - 1;
+                                }
+                                _pageController.jumpToPage(_currentPageIndex);
+                              } else {
+                                // Handle when there are no more images
+                                // You may want to navigate back to the previous screen or show a message
                               }
-                              _pageController.jumpToPage(_currentPageIndex);
-                            } else {
-                              // Handle when there are no more images
-                              // You may want to navigate back to the previous screen or show a message
-                            }
-                          },
-                        ),
+                            },
+                          ),
                       ],
                     ),
                     Expanded(
@@ -164,3 +173,8 @@ class StatusViewPageState extends State<StatusViewPage> {
     }
   }
 }
+// Now, the delete button will only be shown for the user's own status.
+
+
+
+

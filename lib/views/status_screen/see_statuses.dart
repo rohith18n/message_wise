@@ -16,7 +16,7 @@ class SeeStatus extends StatefulWidget {
 }
 
 class _SeeStatusState extends State<SeeStatus> {
-  final subtractionTime = DateTime.now().subtract(const Duration(minutes: 10));
+  final subtractionTime = DateTime.now().subtract(const Duration(minutes: 5));
   @override
   Widget build(BuildContext context) {
     return SizedBox(

@@ -19,7 +19,7 @@ class GroupChatService {
     final groupId = const Uuid().v1();
     final batch = FirebaseFirestore.instance.batch();
 
-    //setcurrent user side
+    //set currentuser side
     batch.set(
         FirebaseFirestore.instance
             .collection("users")
@@ -43,7 +43,7 @@ class GroupChatService {
         },
       );
     }
-    //group collection creataing
+    //creating another collection called groupChat
     batch.set(FirebaseFirestore.instance.collection("groupChat").doc(groupId), {
       "groupId": groupId,
       "createdby": currentUser,
@@ -85,7 +85,7 @@ class GroupChatService {
       await getIt<ProfileService>()
           .uploadFile(image, groupId, "groupChat", groupId);
     }
-    log(" create group commit done");
+    log("created group and committed batch");
   }
 
   //send messages
