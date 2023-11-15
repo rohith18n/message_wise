@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously, no_logic_in_create_state
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:message_wise/Service/status/status_services.dart';
+import 'package:message_wise/components/custom_circular_progress_indicator.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'dart:async';
@@ -33,7 +33,7 @@ class StatusViewPageState extends State<StatusViewPage> {
 
   void startAutoSwitchTimer() {
     // Start a timer to automatically switch images every 30 seconds
-    Timer.periodic(const Duration(seconds: 30), (timer) {
+    Timer.periodic(const Duration(seconds: 15), (timer) {
       if (_currentPageIndex < statusData.length - 1) {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 500),
@@ -157,7 +157,7 @@ class StatusViewPageState extends State<StatusViewPage> {
                 );
               },
             )
-          : const Center(child: CircularProgressIndicator()),
+          : const CustomIndicator(),
     );
   }
 

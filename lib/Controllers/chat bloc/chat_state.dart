@@ -6,7 +6,6 @@ abstract class ChatState extends Equatable {
 
 class ChatInitial extends ChatState {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
@@ -14,16 +13,14 @@ class ChatFirstState extends ChatState {
   final UserModels bot;
   final String roomID;
 
-  ChatFirstState({required this.bot, required this.roomID});
+  const ChatFirstState({required this.bot, required this.roomID});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [bot];
 }
 
 class LoadingState extends ChatState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
@@ -33,7 +30,6 @@ class ChatData extends ChatState {
   const ChatData({required this.chats});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 

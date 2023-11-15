@@ -20,7 +20,6 @@ class LoadCurrentUserState extends ProfileBlocState {
   const LoadCurrentUserState({required this.currentUser});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [currentUser];
 }
 
@@ -30,13 +29,11 @@ class UpdatedState extends ProfileBlocState {
   const UpdatedState({required this.currentUser});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [currentUser];
 }
 
 class UpdateSuccessState extends ProfileBlocState {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
@@ -45,7 +42,5 @@ class UpdateErorrState extends ProfileBlocState {
 
   const UpdateErorrState({required this.messages});
   @override
-
-  // TODO: implement props
   List<Object?> get props => [];
 }

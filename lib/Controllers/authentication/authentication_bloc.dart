@@ -56,7 +56,7 @@ class AuthenticationBloc
         log("new user");
         emit(const UsernameState());
       }
-      //=================================
+
       log("verified event");
     });
 
@@ -101,7 +101,6 @@ class AuthenticationBloc
       final result = await AuthService.forgotpassword(event.email);
 
       if (result != null) {
-        log("hhhhhhhhhhhhhhh");
         emit(ValidationErrorState(exceptionOnLogin: result));
       } else {
         emit(ResetPasswordSuccessState());

@@ -10,6 +10,8 @@ import 'package:message_wise/service/posts/posts_services.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
+import 'package:message_wise/views/home%20Screen/home_screen.dart';
+import 'package:message_wise/views/posts_screen/feed_screen.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -94,6 +96,11 @@ class AddPostScreenState extends State<AddPostScreen> {
             'Posted!',
           );
         }
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false,
+        );
         clearImage();
       } else {
         if (context.mounted) {

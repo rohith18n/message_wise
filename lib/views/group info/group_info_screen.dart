@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:message_wise/Models/group_model.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
@@ -13,7 +15,7 @@ import 'functions/group_members_sheet.dart';
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class GrpupInfoScreen extends StatelessWidget {
-  const GrpupInfoScreen({super.key, required this.groupInfo});
+  const GrpupInfoScreen({Key? key, required this.groupInfo}) : super(key: key);
   final GroupModel groupInfo;
 
   @override
@@ -31,7 +33,8 @@ class GrpupInfoScreen extends StatelessWidget {
         height: double.infinity,
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: getProportionateScreenHeight(20)),
+            horizontal: getProportionateScreenHeight(20),
+          ),
           child: Column(
             children: [
               SizedBox(
@@ -39,13 +42,13 @@ class GrpupInfoScreen extends StatelessWidget {
                 height: getProportionateScreenHeight(200),
                 child: CircleAvatar(
                   backgroundImage: groupInfo.photo == null
-                      ? const AssetImage(nullPhoto) as ImageProvider
-                      : NetworkImage(groupInfo.photo ?? ""),
+                      ? const AssetImage(nullPhoto) as ImageProvider<Object>
+                      : NetworkImage(groupInfo.photo!),
                 ),
               ),
               sizeHeight15,
               CustomText(
-                content: groupInfo.name,
+                content: groupInfo.name ?? "", // Handle possible null
                 colour: kTextColor,
               ),
               sizeHeight15,
@@ -56,8 +59,11 @@ class GrpupInfoScreen extends StatelessWidget {
                     width: getProportionateScreenWidth(300),
                     child: ListTile(
                       onTap: () async {
-                        await showMembers(
-                            context, groupInfo.groupId, groupInfo.name);
+                        if (groupInfo.groupId != null &&
+                            groupInfo.name != null) {
+                          await showMembers(
+                              context, groupInfo.groupId!, groupInfo.name!);
+                        }
                       },
                       leading: const Icon(
                         Icons.group,
@@ -76,9 +82,11 @@ class GrpupInfoScreen extends StatelessWidget {
                 builder: (context, state) {
                   if (state is MembersLoadedState) {
                     if (!state.isloading) {
-                      if (state.currentUser!.isAdmin) {
+                      if (state.currentUser != null &&
+                          state.currentUser!.isAdmin) {
                         return GroupSettings(
-                          groupId: groupInfo.groupId,
+                          groupId:
+                              groupInfo.groupId ?? "", // Handle possible null
                         );
                       } else {
                         return const SizedBox.shrink();
@@ -92,12 +100,14 @@ class GrpupInfoScreen extends StatelessWidget {
                 },
               ),
               // exit group
-
               BlocConsumer<GroupFunctionalityBloc, GroupFunctionalityState>(
                 listener: (context, state) {
                   if (state is ExitedGroup || state is DismissState) {
                     Navigator.pushNamedAndRemoveUntil(
-                        context, HomeScreen.routeName, (route) => false);
+                      context,
+                      HomeScreen.routeName,
+                      (route) => false,
+                    );
                   }
                 },
                 builder: (context, state) {
@@ -131,8 +141,9 @@ class GrpupInfoScreen extends StatelessWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(getProportionateScreenHeight(10)),
+                    borderRadius: BorderRadius.circular(
+                      getProportionateScreenHeight(10),
+                    ),
                   ),
                   title: isExitGroup
                       ? const Text('Exit Group')
@@ -156,16 +167,24 @@ class GrpupInfoScreen extends StatelessWidget {
                     TextButton(
                       child: const Text('Yes'),
                       onPressed: () {
-                        if (isExitGroup) {
-                          context
-                              .read<GroupFunctionalityBloc>()
-                              .add(ExitGroup(groupId: groupInfo.groupId));
-                        } else {
-                          context
-                              .read<GroupFunctionalityBloc>()
-                              .add(DismissGroup(groupId: groupInfo.groupId));
-                          // Navigator.pop(context);
-                        }
+                        Navigator.of(context).pop(); // Close the AlertDialog
+                        Future.delayed(Duration.zero, () {
+                          if (isExitGroup) {
+                            context.read<GroupFunctionalityBloc>().add(
+                                  ExitGroup(
+                                    groupId: groupInfo.groupId ??
+                                        "", // Handle possible null
+                                  ),
+                                );
+                          } else {
+                            context.read<GroupFunctionalityBloc>().add(
+                                  DismissGroup(
+                                    groupId: groupInfo.groupId ??
+                                        "", // Handle possible null
+                                  ),
+                                );
+                          }
+                        });
                       },
                     ),
                   ],

@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
     ContactScreen(),
     SettingsScreen(),
   ];
-  final ValueNotifier<int> _index = ValueNotifier(1);
+  final ValueNotifier<int> _index = ValueNotifier(0);
 
   @override
   Widget build(BuildContext context) {

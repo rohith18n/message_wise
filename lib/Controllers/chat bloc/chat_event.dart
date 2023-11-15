@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'chat_bloc.dart';
 
 abstract class ChatEvent extends Equatable {
@@ -7,10 +9,9 @@ abstract class ChatEvent extends Equatable {
 class EnterToChatEvent extends ChatEvent {
   final UserModels bot;
 
-  EnterToChatEvent({required this.bot});
+  const EnterToChatEvent({required this.bot});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 

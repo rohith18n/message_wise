@@ -64,6 +64,9 @@ class GroupChatScreen extends StatelessWidget {
                         // ignore: unnecessary_null_comparison
                         return state.allmessages != null
                             ? ListView.builder(
+                                physics: const BouncingScrollPhysics(
+                                  decelerationRate: ScrollDecelerationRate.fast,
+                                ),
                                 controller: _scrollController,
                                 reverse: true,
                                 shrinkWrap: true,

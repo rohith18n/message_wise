@@ -90,8 +90,9 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     return Scaffold(
       extendBody: true,
       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: AppBarForChat(bot: widget.person)),
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarForChat(bot: widget.person),
+      ),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -101,92 +102,100 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           children: [
             Expanded(
               child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection("chatroom")
-                      .doc(widget.roomID)
-                      .collection("chats")
-                      .orderBy("time", descending: true)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(
-                            decelerationRate: ScrollDecelerationRate.fast),
-                        controller: _scrollController,
-                        reverse: true,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Message(
-                            message: snapshot.data!.docs[index],
-                            uID: _currentuser!.uid,
-                          );
-                        },
-                        itemCount: snapshot.data!.docs.length,
-                      );
-                    } else {
-                      return const CustomIndicator();
-                    }
-                  }),
-            ),
-            StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection('chatroom')
+                    .collection("chatroom")
                     .doc(widget.roomID)
+                    .collection("chats")
+                    .orderBy("time", descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return snapshot.data != null &&
-                            snapshot.data!.data() != null
-                        ? snapshot.data!.data()![widget.person.uid] == false ||
-                                snapshot.data!.data()![widget.person.uid] ==
-                                    null
-                            ? const SizedBox()
-                            : const SizedBox()
-                        : const SizedBox();
-                  } else {
-                    return const SizedBox();
-                  }
-                }),
-            Container(
-                decoration: BoxDecoration(
-                    color: Colors.orange.shade50,
-                    borderRadius: BorderRadius.circular(20)),
-                margin: EdgeInsets.all(getProportionateScreenHeight(15)),
-                child: Row(
-                  children: [
-                    SizedBox(
-                        width: getProportionateScreenWidth(260),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: TextField(
-                            controller: _messageController,
-                            style: GoogleFonts.poppins(
-                                decoration: TextDecoration.none),
-                            decoration: textfieldDecoration(),
-                          ),
-                        )),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        context.read<ChatBloc>().add(SendMessageEvent(
-                            messages: _messageController.text,
-                            roomID: widget.roomID));
-                        _messageController.clear();
-                        _scrollController.animateTo(
-                          0.0,
-                          curve: Curves.easeOut,
-                          duration: const Duration(milliseconds: 300),
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(
+                        decelerationRate: ScrollDecelerationRate.fast,
+                      ),
+                      controller: _scrollController,
+                      reverse: true,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Message(
+                          message: snapshot.data!.docs[index],
+                          uID: _currentuser!.uid,
                         );
                       },
-                      child: CustomText(
-                        content: "Send",
-                        weight: FontWeight.bold,
-                        colour: kPrimaryColor,
-                        size: getProportionateScreenHeight(16),
+                      itemCount: snapshot.data!.docs.length,
+                    );
+                  } else {
+                    return const CustomIndicator();
+                  }
+                },
+              ),
+            ),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('chatroom')
+                  .doc(widget.roomID)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data != null && snapshot.data!.data() != null
+                      ? snapshot.data!.data()![widget.person.uid] == false ||
+                              snapshot.data!.data()![widget.person.uid] == null
+                          ? const SizedBox()
+                          : const SizedBox()
+                      : const SizedBox();
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin: EdgeInsets.all(getProportionateScreenHeight(15)),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: getProportionateScreenWidth(260),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: TextField(
+                        controller: _messageController,
+                        style: GoogleFonts.poppins(
+                          decoration: TextDecoration.none,
+                        ),
+                        decoration: textfieldDecoration(),
                       ),
-                    )
-                  ],
-                )),
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      context.read<ChatBloc>().add(SendMessageEvent(
+                            messages: _messageController.text,
+                            roomID: widget.roomID,
+                          ));
+                      _messageController.clear();
+
+                      // Scroll to the bottom after sending a message
+                      _scrollController.animateTo(
+                        0.0,
+                        curve: Curves.easeOut,
+                        duration: const Duration(milliseconds: 300),
+                      );
+                    },
+                    child: CustomText(
+                      content: "Send",
+                      weight: FontWeight.bold,
+                      colour: kPrimaryColor,
+                      size: getProportionateScreenHeight(16),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -195,11 +204,12 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
 
   InputDecoration textfieldDecoration() {
     return const InputDecoration(
-        disabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        hintText: " Message...",
-        border: InputBorder.none,
-        errorBorder: InputBorder.none);
+      disabledBorder: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      hintText: " Message...",
+      border: InputBorder.none,
+      errorBorder: InputBorder.none,
+    );
   }
 }

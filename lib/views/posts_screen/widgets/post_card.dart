@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, prefer_typing_uninitialized_variables
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +14,7 @@ import 'package:message_wise/views/posts_screen/widgets/comment_screen.dart';
 import 'package:message_wise/views/posts_screen/widgets/like_animation.dart';
 
 class PostCard extends StatefulWidget {
-  final snap;
+  final dynamic snap;
   const PostCard({
     Key? key,
     required this.snap,
@@ -71,7 +71,8 @@ class _PostCardState extends State<PostCard> {
       ),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(
-            decelerationRate: ScrollDecelerationRate.fast),
+          decelerationRate: ScrollDecelerationRate.fast,
+        ),
         child: Column(
           children: [
             // HEADER SECTION OF THE POST
@@ -116,31 +117,35 @@ class _PostCardState extends State<PostCard> {
                               builder: (context) {
                                 return Dialog(
                                   child: ListView(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 16),
-                                      shrinkWrap: true,
-                                      children: [
-                                        'Delete',
-                                      ]
-                                          .map(
-                                            (e) => InkWell(
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 12,
-                                                      horizontal: 16),
-                                                  child: Text(e),
-                                                ),
-                                                onTap: () {
-                                                  deletePost(
-                                                    widget.snap['postId']
-                                                        .toString(),
-                                                  );
-                                                  // remove the dialog box
-                                                  Navigator.of(context).pop();
-                                                }),
-                                          )
-                                          .toList()),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 16,
+                                    ),
+                                    shrinkWrap: true,
+                                    children: [
+                                      'Delete',
+                                    ]
+                                        .map(
+                                          (e) => InkWell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 12,
+                                                horizontal: 16,
+                                              ),
+                                              child: Text(e),
+                                            ),
+                                            onTap: () {
+                                              deletePost(
+                                                widget.snap['postId']
+                                                    .toString(),
+                                              );
+                                              // remove the dialog box
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
                                 );
                               },
                             );
@@ -166,6 +171,11 @@ class _PostCardState extends State<PostCard> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
+                  // Placeholder added here
+                  Placeholder(
+                    fallbackHeight: MediaQuery.of(context).size.height * 0.35,
+                    fallbackWidth: double.infinity,
+                  ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.35,
                     width: double.infinity,
@@ -234,12 +244,14 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
                 Expanded(
-                    child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: IconButton(
                       icon: const Icon(Icons.bookmark_border),
-                      onPressed: () {}),
-                ))
+                      onPressed: () {},
+                    ),
+                  ),
+                ),
               ],
             ),
             //DESCRIPTION AND NUMBER OF COMMENTS
@@ -250,14 +262,15 @@ class _PostCardState extends State<PostCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   DefaultTextStyle(
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(fontWeight: FontWeight.w800),
-                      child: Text(
-                        '${widget.snap['likes'].length} likes',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      )),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(fontWeight: FontWeight.w800),
+                    child: Text(
+                      '${widget.snap['likes'].length} likes',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.only(
@@ -311,7 +324,7 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

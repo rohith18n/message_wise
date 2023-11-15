@@ -60,6 +60,9 @@ class _FeedScreenState extends State<FeedScreen> {
               const SeeStatus(),
               Expanded(
                 child: ListView.builder(
+                  physics: const BouncingScrollPhysics(
+                    decelerationRate: ScrollDecelerationRate.fast,
+                  ),
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (ctx, index) => PostCard(
                     snap: snapshot.data!.docs[index].data(),

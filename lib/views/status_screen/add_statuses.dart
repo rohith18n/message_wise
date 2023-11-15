@@ -5,13 +5,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:message_wise/Service/status/status_services.dart';
+import 'package:message_wise/Controllers/bloc/status_bloc.dart';
+import 'package:message_wise/Controllers/bloc/status_event.dart';
+import 'package:message_wise/Controllers/bloc/status_state.dart';
 import 'package:message_wise/components/custom_circular_progress_indicator.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
+import 'package:message_wise/views/home%20Screen/home_screen.dart';
 
 class AddStatus extends StatefulWidget {
   const AddStatus({super.key});
@@ -70,47 +74,6 @@ class _AddStatusState extends State<AddStatus> {
         );
       },
     );
-  }
-
-  void postImage(String uid, String username, String profImage) async {
-    setState(() {
-      isLoading = true;
-    });
-    // start the loading
-    try {
-      // upload to storage and db
-      String res = await FireStoreStatusMethods().uploadStatus(
-        _descriptionController.text,
-        _file!,
-        uid,
-        username,
-        profImage,
-      );
-      if (res == "success") {
-        setState(() {
-          isLoading = false;
-        });
-        if (context.mounted) {
-          showSnackBar(
-            context,
-            'Updated!',
-          );
-        }
-        clearImage();
-      } else {
-        if (context.mounted) {
-          showSnackBar(context, res);
-        }
-      }
-    } catch (err) {
-      setState(() {
-        isLoading = false;
-      });
-      showSnackBar(
-        context,
-        err.toString(),
-      );
-    }
   }
 
   void clearImage() {
@@ -172,11 +135,14 @@ class _AddStatusState extends State<AddStatus> {
                         .collection("users")
                         .doc(FirebaseAuth.instance.currentUser!.uid)
                         .get();
-                    postImage(
-                      FirebaseAuth.instance.currentUser!.uid,
-                      currentUser.get("userName"),
-                      currentUser.get("photo"),
-                    );
+
+                    context.read<StatusBloc>().add(AddStatusEvent(
+                          uid: FirebaseAuth.instance.currentUser!.uid,
+                          username: currentUser.get("userName"),
+                          profImage: currentUser.get("photo"),
+                          description: _descriptionController.text,
+                          file: _file!,
+                        ));
                   },
                   child: const Text(
                     "Update",
@@ -189,39 +155,61 @@ class _AddStatusState extends State<AddStatus> {
               ],
             ),
             // Status Form
-            body: Column(
-              children: <Widget>[
-                isLoading
-                    ? const CustomIndicator()
-                    : const Padding(padding: EdgeInsets.only(top: 0.0)),
-                const Divider(),
-                Expanded(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.98,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.fitWidth,
-                        alignment: FractionalOffset.topCenter,
-                        image: MemoryImage(_file!),
+            body: BlocListener<StatusBloc, StatusState>(
+              listener: (context, state) {
+                if (state is StatusAddedState) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false,
+                  );
+                  if (context.mounted) {
+                    showSnackBar(
+                      context,
+                      'Updated!',
+                    );
+                  }
+                  clearImage();
+                } else if (state is StatusErrorState) {
+                  if (context.mounted) {
+                    showSnackBar(context, state.error);
+                  }
+                }
+              },
+              child: Column(
+                children: <Widget>[
+                  isLoading
+                      ? const CustomIndicator()
+                      : const Padding(padding: EdgeInsets.only(top: 0.0)),
+                  const Divider(),
+                  Expanded(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.98,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fitWidth,
+                          alignment: FractionalOffset.topCenter,
+                          image: MemoryImage(_file!),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.99,
-                  child: TextField(
-                    controller: _descriptionController,
-                    decoration: const InputDecoration(
-                      hintText: "Add a caption..",
-                      enabledBorder: OutlineInputBorder(),
-                      focusedBorder: InputBorder.none,
-                      prefixIcon: Icon(CupertinoIcons.pencil),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.99,
+                    child: TextField(
+                      controller: _descriptionController,
+                      decoration: const InputDecoration(
+                        hintText: "Add a caption..",
+                        enabledBorder: OutlineInputBorder(),
+                        focusedBorder: InputBorder.none,
+                        prefixIcon: Icon(CupertinoIcons.pencil),
+                      ),
+                      maxLines: 1,
                     ),
-                    maxLines: 1,
                   ),
-                ),
-                const Divider(),
-              ],
+                  const Divider(),
+                ],
+              ),
             ),
           );
   }

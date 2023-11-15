@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:message_wise/Controllers/authentication/authentication_bloc.dart';
+import 'package:message_wise/Controllers/bloc/status_bloc.dart';
 import 'package:message_wise/Controllers/chat%20bloc/chat_bloc.dart';
 import 'package:message_wise/Controllers/group%20chat%20bloc/group_bloc.dart';
 import 'package:message_wise/Controllers/profile/profile_bloc_bloc.dart';
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => ChatBloc(),
+          ),
+          BlocProvider(
+            create: (context) => StatusBloc(),
           ),
           BlocProvider(
             create: (context) => getIt<ProfileBlocBloc>(),
