@@ -2,7 +2,9 @@ import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
+import 'package:message_wise/views/settings%20screen/widgets/about.dart';
 import 'package:message_wise/views/settings%20screen/widgets/custom_alertdialog.dart';
+import 'package:message_wise/views/settings%20screen/widgets/privacy_policy.dart';
 import 'package:message_wise/views/settings%20screen/widgets/profile_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:message_wise/views/settings%20screen/widgets/profile_menu.dart';
+import 'package:message_wise/views/settings%20screen/widgets/terms_and_conditions.dart';
 import '../../Controllers/profile/profile_bloc_bloc.dart';
 import '../splash Screen/splash_screen.dart';
 
@@ -17,7 +20,7 @@ final user = FirebaseAuth.instance.currentUser;
 
 class SettingsScreen extends StatelessWidget {
   static String routeName = "/settings";
-  SettingsScreen({super.key});
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +49,46 @@ class SettingsScreen extends StatelessWidget {
                 IconButton(onPressed: () {}, icon: const Icon(Icons.edit))
               ],
             ),
-            Column(
-              children: List.generate(
-                  4,
-                  (index) => ProfileMenu(
-                      text: listdata[index][1], icon: listdata[index][0])),
+            ProfileMenu(
+              text: "My Account",
+              icon: "assets/icons/User Icon.svg",
+              press: () {},
+            ),
+            ProfileMenu(
+              text: "About us",
+              icon: "assets/icons/Flash Icon.svg",
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AboutPage(),
+                  ),
+                );
+              },
+            ),
+            ProfileMenu(
+              text: "Terms and Conditions",
+              icon: "assets/icons/Bell.svg",
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TermsAndConditions(),
+                  ),
+                );
+              },
+            ),
+            ProfileMenu(
+              text: "privacy Policy",
+              icon: "assets/icons/Lock.svg",
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PrivacyPolicyPage(),
+                  ),
+                );
+              },
             ),
             ProfileMenu(
               text: "Log Out",
@@ -64,9 +102,6 @@ class SettingsScreen extends StatelessWidget {
                         content: "Are you sure you want to log out?",
                         actionName: "Log Out",
                         press: () async {
-                          // context.read<ChatBloc>().close();
-                          // context.read<GroupFunctionalityBloc>().close();
-                          // context.read<GchatBloc>().close();
                           final gg = GoogleSignIn();
 
                           gg.disconnect();
@@ -80,12 +115,6 @@ class SettingsScreen extends StatelessWidget {
                                   builder: (context) => const SplashScreen(),
                                 ),
                                 (route) => false);
-                            // context.read<ChatBloc>().add(ChatInitialEvent());
-                            // context.read<GchatBloc>().add(GchatInitialEvent());
-                            // context.read<GroupBloc>().add(GroupInitialEvent());
-                            // context
-                            //     .read<GroupFunctionalityBloc>()
-                            //     .add(GroupFunctionalityInitialEvent());
                           }
                         });
                   },
@@ -97,11 +126,4 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-
-  List<List> listdata = [
-    ["assets/icons/User Icon.svg", "My Account"],
-    ["assets/icons/Flash Icon.svg", "About us"],
-    ["assets/icons/Bell.svg", "Notifications"],
-    ["assets/icons/Lock.svg", "privacy"],
-  ];
 }
