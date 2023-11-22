@@ -16,13 +16,13 @@ const kTextColor = Color(0xFF757575);
 const kAnimationDuration = Duration(milliseconds: 200);
 
 final headingStyle = GoogleFonts.poppins(
-  fontSize: getProportionateScreenWidth(26),
+  fontSize: 26,
   fontWeight: FontWeight.bold,
   color: Colors.black,
   height: getProportionateScreenHeight(1.5),
 );
 final appBarHeadingStyle = GoogleFonts.poppins(
-  fontSize: getProportionateScreenWidth(20),
+  fontSize: 20,
   fontWeight: FontWeight.bold,
   color: Colors.black,
   height: getProportionateScreenHeight(1.5),

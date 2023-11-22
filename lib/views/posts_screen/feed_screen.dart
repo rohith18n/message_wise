@@ -9,6 +9,8 @@ import 'package:message_wise/size_config.dart';
 import 'package:message_wise/views/posts_screen/add_posts_screen.dart';
 import 'package:message_wise/views/posts_screen/widgets/post_card.dart';
 import 'package:message_wise/views/status_screen/see_statuses.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+// Import other necessary packages and files
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -20,7 +22,6 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
-    // final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -37,40 +38,85 @@ class _FeedScreenState extends State<FeedScreen> {
               icon: const Icon(CupertinoIcons.camera_on_rectangle),
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AddPostScreen()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddPostScreen(),
+                  ),
+                );
               },
             ),
-          )
+          ),
         ],
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('posts')
-            .orderBy('datePublished', descending: true)
-            .snapshots(),
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CustomIndicator();
-          }
-          return Column(
-            children: [
-              const SeeStatus(),
-              Expanded(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(
-                    decelerationRate: ScrollDecelerationRate.fast,
-                  ),
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (ctx, index) => PostCard(
-                    snap: snapshot.data!.docs[index].data(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth >= 600 || kIsWeb) {
+            // If the screen width is greater than or equal to 600 (tablet/desktop) or running on web
+            return Column(
+              children: [
+                const Expanded(
+                  flex: 2,
+                  child: SeeStatus(),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('posts')
+                        .orderBy('datePublished', descending: true)
+                        .snapshots(),
+                    builder: (context,
+                        AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                            snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CustomIndicator();
+                      }
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(
+                          decelerationRate: ScrollDecelerationRate.fast,
+                        ),
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (ctx, index) => PostCard(
+                          snap: snapshot.data!.docs[index].data(),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ),
-            ],
-          );
+              ],
+            );
+          } else {
+            // If the screen width is less than 600 (mobile)
+            return Column(
+              children: [
+                const SeeStatus(),
+                Expanded(
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('posts')
+                        .orderBy('datePublished', descending: true)
+                        .snapshots(),
+                    builder: (context,
+                        AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                            snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CustomIndicator();
+                      }
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(
+                          decelerationRate: ScrollDecelerationRate.fast,
+                        ),
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (ctx, index) => PostCard(
+                          snap: snapshot.data!.docs[index].data(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
         },
       ),
     );

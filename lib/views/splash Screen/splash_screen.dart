@@ -44,7 +44,7 @@ class SplashScreen extends StatelessWidget {
               Text(
                 "Message Wise",
                 style: GoogleFonts.poppins(
-                    fontSize: getProportionateScreenWidth(18),
+                    fontSize: 18,
                     color: kPrimaryColor,
                     fontWeight: FontWeight.bold),
               ),

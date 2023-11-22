@@ -1,9 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:message_wise/service/posts/posts_services.dart';
 import 'package:message_wise/constants.dart';
@@ -15,6 +13,7 @@ import 'package:message_wise/views/posts_screen/widgets/like_animation.dart';
 
 class PostCard extends StatefulWidget {
   final dynamic snap;
+
   const PostCard({
     Key? key,
     required this.snap,
@@ -64,6 +63,8 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: getProportionateScreenHeight(10),
@@ -84,7 +85,7 @@ class _PostCardState extends State<PostCard> {
               child: Row(
                 children: <Widget>[
                   CircleAvatar(
-                    radius: getProportionateScreenWidth(16),
+                    radius: 16,
                     backgroundImage: NetworkImage(
                       widget.snap['profImage'].toString(),
                     ),
@@ -156,6 +157,7 @@ class _PostCardState extends State<PostCard> {
                 ],
               ),
             ),
+
             // IMAGE SECTION OF THE POST
             GestureDetector(
               onDoubleTap: () {
@@ -173,15 +175,15 @@ class _PostCardState extends State<PostCard> {
                 children: [
                   // Placeholder added here
                   Placeholder(
-                    fallbackHeight: MediaQuery.of(context).size.height * 0.35,
+                    fallbackHeight: screenWidth * 0.35,
                     fallbackWidth: double.infinity,
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: screenWidth * 0.35,
                     width: double.infinity,
                     child: Image.network(
                       widget.snap['postUrl'].toString(),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fitHeight,
                     ),
                   ),
                   AnimatedOpacity(
@@ -207,6 +209,7 @@ class _PostCardState extends State<PostCard> {
                 ],
               ),
             ),
+
             // LIKE, COMMENT SECTION OF THE POST
             Row(
               children: <Widget>[
@@ -254,9 +257,12 @@ class _PostCardState extends State<PostCard> {
                 ),
               ],
             ),
+
             //DESCRIPTION AND NUMBER OF COMMENTS
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenWidth(16),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,

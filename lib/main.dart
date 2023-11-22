@@ -19,7 +19,16 @@ import 'Controllers/users bloc/users_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureInjection();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyAWQbQqBUCgjz_1HSjzTxWxxOxXpzJs0NI",
+          appId: "1:380431189866:web:8268e9f6f4f7c3b7e60713",
+          authDomain: "messagewise-1700d.firebaseapp.com",
+          databaseURL: "https://messagewise-1700d-default-rtdb.firebaseio.com",
+          messagingSenderId: '380431189866',
+          storageBucket: "messagewise-1700d.appspot.com",
+          measurementId: "G-9QKVXDSZEC",
+          projectId: 'messagewise-1700d'));
   runApp(const MyApp());
 }
 

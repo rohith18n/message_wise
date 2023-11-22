@@ -82,19 +82,19 @@ class _SeeStatusState extends State<SeeStatus> {
                         child: SizedBox(
                           width: getProportionateScreenWidth(90),
                           height: getProportionateScreenHeight(90),
-                          child: ListTile(
+                          child: const ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: Column(
                               children: [
                                 CircleAvatar(
                                   backgroundColor: kPrimaryColor,
-                                  radius: getProportionateScreenWidth(27),
-                                  child: const Icon(
+                                  radius: 31,
+                                  child: Icon(
                                     Icons.add,
                                     color: Colors.white,
                                   ),
                                 ),
-                                const Text(
+                                Text(
                                   "Status",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -124,7 +124,7 @@ class _SeeStatusState extends State<SeeStatus> {
                                   CircleAvatar(
                                     backgroundImage: NetworkImage(
                                         statuses.first['user']['profImage']),
-                                    radius: getProportionateScreenWidth(27),
+                                    radius: 27,
                                   ),
                                 Text(
                                   statuses.first['user']['username'] ??

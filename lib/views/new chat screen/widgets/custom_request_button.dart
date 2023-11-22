@@ -18,13 +18,13 @@ class CustomRequestButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: getProportionateScreenHeight(25),
+      height: 25,
       child: ElevatedButton(
           onPressed: onPressed,
           style: buttonStyle,
           child: CustomText(
             content: textContent,
-            size: getProportionateScreenWidth(10),
+            size: 10,
           )),
     );
   }

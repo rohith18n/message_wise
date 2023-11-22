@@ -36,7 +36,7 @@ class BodyState extends State<Body> {
         child: Column(
           children: <Widget>[
             Expanded(
-              flex: 3,
+              flex: 5,
               child: PageView.builder(
                 onPageChanged: (value) {
                   setState(() {
