@@ -4,7 +4,7 @@ import 'package:message_wise/components/default_button.dart';
 import 'package:message_wise/components/text_row.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
-import 'package:message_wise/views/sign%20up%20screen/widgets/verify_email_button.dart';
+import 'package:message_wise/views/authentication_screen/widgets/verify_email_button.dart';
 import 'package:message_wise/views/username%20Screen/username_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';

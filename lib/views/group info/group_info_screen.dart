@@ -48,7 +48,7 @@ class GrpupInfoScreen extends StatelessWidget {
               ),
               sizeHeight15,
               CustomText(
-                content: groupInfo.name ?? "", // Handle possible null
+                content: groupInfo.name, // Handle possible null
                 colour: kTextColor,
               ),
               sizeHeight15,
@@ -62,7 +62,7 @@ class GrpupInfoScreen extends StatelessWidget {
                         if (groupInfo.groupId != null &&
                             groupInfo.name != null) {
                           await showMembers(
-                              context, groupInfo.groupId!, groupInfo.name!);
+                              context, groupInfo.groupId, groupInfo.name);
                         }
                       },
                       leading: const Icon(
@@ -85,8 +85,7 @@ class GrpupInfoScreen extends StatelessWidget {
                       if (state.currentUser != null &&
                           state.currentUser!.isAdmin) {
                         return GroupSettings(
-                          groupId:
-                              groupInfo.groupId ?? "", // Handle possible null
+                          groupId: groupInfo.groupId, // Handle possible null
                         );
                       } else {
                         return const SizedBox.shrink();
@@ -172,15 +171,15 @@ class GrpupInfoScreen extends StatelessWidget {
                           if (isExitGroup) {
                             context.read<GroupFunctionalityBloc>().add(
                                   ExitGroup(
-                                    groupId: groupInfo.groupId ??
-                                        "", // Handle possible null
+                                    groupId: groupInfo
+                                        .groupId, // Handle possible null
                                   ),
                                 );
                           } else {
                             context.read<GroupFunctionalityBloc>().add(
                                   DismissGroup(
-                                    groupId: groupInfo.groupId ??
-                                        "", // Handle possible null
+                                    groupId: groupInfo
+                                        .groupId, // Handle possible null
                                   ),
                                 );
                           }

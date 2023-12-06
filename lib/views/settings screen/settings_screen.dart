@@ -50,11 +50,6 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
             ProfileMenu(
-              text: "My Account",
-              icon: "assets/icons/User Icon.svg",
-              press: () {},
-            ),
-            ProfileMenu(
               text: "About us",
               icon: "assets/icons/Flash Icon.svg",
               press: () {

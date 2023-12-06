@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:message_wise/constants.dart';
 import 'package:message_wise/size_config.dart';
-import 'package:message_wise/views/sign%20up%20screen/sign_up_screen.dart';
+import 'package:message_wise/views/authentication_screen/sign_up_screen.dart';
 import '../components/splash_content.dart';
 import '../../../components/default_button.dart';
 

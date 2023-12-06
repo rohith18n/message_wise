@@ -30,24 +30,24 @@ class SocalCardRow extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          width: getProportionateScreenWidth(20),
-        ),
-        Column(
-          children: [
-            SocalCard(
-              icon: "assets/icons/Phone.svg",
-              press: () {
-                context.read<AuthenticationBloc>().add(PhoneSignInEvent());
-              },
-            ),
-            CustomText(
-              size: getProportionateScreenWidth(12),
-              content: "Sign in with \n    Phone",
-              colour: colorblack,
-            ),
-          ],
-        ),
+        // SizedBox(
+        //   width: getProportionateScreenWidth(20),
+        // ),
+        // Column(
+        //   children: [
+        //     SocalCard(
+        //       icon: "assets/icons/Phone.svg",
+        //       press: () {
+        //         context.read<AuthenticationBloc>().add(PhoneSignInEvent());
+        //       },
+        //     ),
+        //     CustomText(
+        //       size: getProportionateScreenWidth(12),
+        //       content: "Sign in with \n    Phone",
+        //       colour: colorblack,
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }

@@ -2,8 +2,8 @@
 
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
-import 'package:message_wise/Models/call_model.dart';
-import 'package:message_wise/Service/call/call_services.dart';
+import 'package:message_wise/models/call_model.dart';
+import 'package:message_wise/service/call/call_services.dart';
 import 'package:message_wise/components/custom_circular_progress_indicator.dart';
 import 'package:message_wise/config/agora_config.dart';
 
@@ -20,6 +20,7 @@ class CallScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CallScreenState createState() => _CallScreenState();
 }
 

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:message_wise/Service/status/status_services.dart';
+import 'package:message_wise/service/status/status_services.dart';
 
 import 'status_event.dart';
 import 'status_state.dart';

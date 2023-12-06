@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
     const FeedScreen(),
     ChatScreen(),
     ContactScreen(),
-    SettingsScreen(),
+    const SettingsScreen(),
   ];
   final ValueNotifier<int> _index = ValueNotifier(0);
 

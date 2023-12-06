@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:message_wise/Models/status_model.dart';
-import 'package:message_wise/Service/posts/storage_methods.dart';
+import 'package:message_wise/service/posts/storage_methods.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreStatusMethods {

@@ -47,6 +47,14 @@ class AboutPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(18.0),
               child: CustomText(
+                content: 'Version 1. 2. 0',
+                size: getProportionateScreenHeight(14),
+                colour: Colors.black,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: CustomText(
                 content: 'Created by Rohith N',
                 size: getProportionateScreenHeight(18),
                 colour: Colors.black,

@@ -171,17 +171,30 @@ class _PostCardState extends State<PostCard> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  // Placeholder added here
-                  Placeholder(
-                    fallbackHeight: MediaQuery.of(context).size.height * 0.35,
-                    fallbackWidth: double.infinity,
-                  ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.35,
                     width: double.infinity,
                     child: Image.network(
                       widget.snap['postUrl'].toString(),
                       fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          // If the image is fully loaded, display the image
+                          return child;
+                        } else {
+                          // If the image is still loading, display a circular progress indicator
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: kPrimaryColor,
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                   AnimatedOpacity(
@@ -240,15 +253,6 @@ class _PostCardState extends State<PostCard> {
                       builder: (context) => CommentsScreen(
                         postId: widget.snap['postId'].toString(),
                       ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.bookmark_border),
-                      onPressed: () {},
                     ),
                   ),
                 ),

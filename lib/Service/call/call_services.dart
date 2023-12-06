@@ -3,7 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:message_wise/Models/call_model.dart';
+import 'package:message_wise/models/call_model.dart';
+
 import 'package:message_wise/util.dart';
 import 'package:message_wise/views/call%20screen/call_screen.dart';
 

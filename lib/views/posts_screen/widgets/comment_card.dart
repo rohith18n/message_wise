@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:message_wise/constants.dart';
 
 class CommentCard extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final snap;
   const CommentCard({Key? key, required this.snap}) : super(key: key);
 
@@ -58,13 +59,13 @@ class CommentCard extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Icon(
-              Icons.favorite,
-              size: 16,
-            ),
-          )
+          // Container(
+          //   padding: const EdgeInsets.all(8),
+          //   child: const Icon(
+          //     Icons.favorite,
+          //     size: 16,
+          //   ),
+          // )
         ],
       ),
     );
