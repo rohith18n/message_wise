@@ -12,6 +12,7 @@ import 'package:message_wise/util.dart';
 import 'package:message_wise/views/common/widgets/custom_text.dart';
 import 'package:message_wise/views/posts_screen/widgets/comment_screen.dart';
 import 'package:message_wise/views/posts_screen/widgets/like_animation.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PostCard extends StatefulWidget {
   final dynamic snap;
@@ -25,6 +26,7 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  bool _showShimmer = true;
   int commentLen = 0;
   bool isLikeAnimating = false;
 
@@ -32,6 +34,11 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     super.initState();
     fetchCommentLen();
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        _showShimmer = false;
+      });
+    });
   }
 
   fetchCommentLen() async {
@@ -174,27 +181,43 @@ class _PostCardState extends State<PostCard> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.35,
                     width: double.infinity,
-                    child: Image.network(
-                      widget.snap['postUrl'].toString(),
-                      fit: BoxFit.cover,
-                      loadingBuilder: (BuildContext context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) {
-                          // If the image is fully loaded, display the image
-                          return child;
-                        } else {
-                          // If the image is still loading, display a circular progress indicator
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: kPrimaryColor,
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      (loadingProgress.expectedTotalBytes ?? 1)
-                                  : null,
-                            ),
-                          );
-                        }
-                      },
+                    child: Stack(
+                      children: [
+                        Visibility(
+                          visible: !_showShimmer,
+                          child: Image.network(
+                            width: double.infinity,
+                            widget.snap['postUrl'].toString(),
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                // If the image is fully loaded, display the image
+                                return child;
+                              } else {
+                                // If the image is still loading, display a circular progress indicator
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: kPrimaryColor,
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            (loadingProgress
+                                                    .expectedTotalBytes ??
+                                                1)
+                                        : null,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          visible: _showShimmer,
+                          child: _buildShimmerLoader(),
+                        ),
+                      ],
                     ),
                   ),
                   AnimatedOpacity(
@@ -334,4 +357,14 @@ class _PostCardState extends State<PostCard> {
       ),
     );
   }
+}
+
+Widget _buildShimmerLoader() {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Container(
+      color: Colors.white, // Background color of your widget
+    ),
+  );
 }

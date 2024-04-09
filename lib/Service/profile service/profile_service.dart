@@ -14,7 +14,7 @@ class ProfileService {
   Future<dynamic> selectImage() async {
     final result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ["jpg"]);
-    log("selectImage filePicker $result");
+    log("selectImage filePicker picked a File from gallery  $result");
     return result;
   }
 
@@ -54,7 +54,6 @@ class ProfileService {
       isUploaded = e.code;
     }
 
-    log("image uploaded");
     return isUploaded;
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:message_wise/Models/user_model.dart';
 import 'package:message_wise/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,9 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../service/chat/chat_service.dart';
-
 part 'users_event.dart';
 part 'users_state.dart';
 

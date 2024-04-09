@@ -69,7 +69,7 @@ class ProfileBlocBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     });
     on<UpdatedEvent>((event, emit) {
       if (user != null) {
-        log("updated event ${user!.email}");
+        log("Picture updated event ${user!.email}");
         emit(LoadCurrentUserState(currentUser: user!));
       }
     });
